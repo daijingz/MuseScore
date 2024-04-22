@@ -34,9 +34,9 @@
 
 #include "log.h"
 
-using namespace mu;
-using namespace mu::audio;
-using namespace mu::audio::soundtrack;
+using namespace muse;
+using namespace muse::audio;
+using namespace muse::audio::soundtrack;
 
 static constexpr int PREPARE_STEP = 0;
 static constexpr int ENCODE_STEP = 1;
@@ -104,7 +104,7 @@ Ret SoundTrackWriter::write()
         return make_ret(Err::ErrorEncode);
     }
 
-    return make_ok();
+    return muse::make_ok();
 }
 
 void SoundTrackWriter::abort()
@@ -112,7 +112,7 @@ void SoundTrackWriter::abort()
     m_isAborted = true;
 }
 
-mu::Progress SoundTrackWriter::progress()
+Progress SoundTrackWriter::progress()
 {
     return m_progress;
 }
@@ -164,7 +164,7 @@ Ret SoundTrackWriter::generateAudioData()
         return make_ret(Err::NoAudioToExport);
     }
 
-    return make_ok();
+    return muse::make_ok();
 }
 
 void SoundTrackWriter::sendStepProgress(int step, int64_t current, int64_t total)

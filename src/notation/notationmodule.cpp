@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -86,10 +86,11 @@
 #include "diagnostics/idiagnosticspathsregister.h"
 
 using namespace mu::notation;
-using namespace mu::modularity;
-using namespace mu::ui;
-using namespace mu::actions;
-using namespace mu::uicomponents;
+using namespace muse;
+using namespace muse::modularity;
+using namespace muse::ui;
+using namespace muse::actions;
+using namespace muse::uicomponents;
 
 static void notationscene_init_qrc()
 {
@@ -224,12 +225,12 @@ void NotationModule::onInit(const IApplication::RunMode& mode)
         pr->reg("instruments", m_configuration->instrumentListPath());
 
         io::paths_t scoreOrderPaths = m_configuration->scoreOrderListPaths();
-        for (const io::path_t& p : scoreOrderPaths) {
+        for (const muse::io::path_t& p : scoreOrderPaths) {
             pr->reg("scoreOrder", p);
         }
 
         io::paths_t uscoreOrderPaths = m_configuration->userScoreOrderListPaths();
-        for (const io::path_t& p : uscoreOrderPaths) {
+        for (const muse::io::path_t& p : uscoreOrderPaths) {
             pr->reg("user scoreOrder", p);
         }
     }

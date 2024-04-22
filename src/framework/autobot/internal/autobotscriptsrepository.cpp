@@ -26,8 +26,8 @@
 
 #include "log.h"
 
-using namespace mu;
-using namespace mu::autobot;
+using namespace muse;
+using namespace muse::autobot;
 
 Scripts AutobotScriptsRepository::scripts() const
 {

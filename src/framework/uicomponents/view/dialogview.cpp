@@ -29,7 +29,7 @@
 
 #include "log.h"
 
-using namespace mu::uicomponents;
+using namespace muse::uicomponents;
 
 static const int DIALOG_WINDOW_FRAME_HEIGHT(20);
 
@@ -38,6 +38,12 @@ DialogView::DialogView(QQuickItem* parent)
 {
     setObjectName("DialogView");
     setClosePolicies(NoAutoClose);
+
+//! NOTE: Ideally we would change appName in App::run and the following would not be necessary. However, this would
+//! also change various paths (something we want to avoid outside of major releases).
+#ifndef Q_OS_MAC
+    setTitle(application()->unstable() ? "MuseScore Studio Development" : "MuseScore Studio");
+#endif
 }
 
 bool DialogView::isDialog() const

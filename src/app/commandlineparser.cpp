@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -28,6 +28,7 @@
 
 #include "log.h"
 
+using namespace muse;
 using namespace mu::app;
 
 static QStringList prepareArguments(int argc, char** argv)
@@ -108,6 +109,12 @@ void CommandLineParser::init()
     m_parser.addOption(QCommandLineOption("sound-profile",
                                           "Use with '-o <file>.mp3' or with '-j <file>', override the sound profile in the given score(s). "
                                           "Possible values: \"MuseScore Basic\", \"Muse Sounds\"", "sound-profile"));
+
+    // MusicXML
+    m_parser.addOption(QCommandLineOption("musicxml-use-default-font",
+                                          "Apply default typeface (Edwin) to imported scores"));
+    m_parser.addOption(QCommandLineOption("musicxml-infer-text-type",
+                                          "Infer text type based on content where possible"));
 
     // Video export
 #ifdef MUE_BUILD_VIDEOEXPORT_MODULE
@@ -202,7 +209,7 @@ void CommandLineParser::parse(int argc, char** argv)
     }
 
     if (m_parser.isSet("d")) {
-        m_options.app.loggerLevel = mu::logger::Level::Debug;
+        m_options.app.loggerLevel = logger::Level::Debug;
     }
 
     if (m_parser.isSet("D")) {
@@ -349,6 +356,15 @@ void CommandLineParser::parse(int argc, char** argv)
         }
     }
 
+    // MusicXML
+    if (m_parser.isSet("musicxml-use-default-font")) {
+        m_options.importMusicXML.useDefaultFont = true;
+    }
+
+    if (m_parser.isSet("musicxml-infer-text-type")) {
+        m_options.importMusicXML.inferTextType = true;
+    }
+
     // Video
 #ifdef MUE_BUILD_VIDEOEXPORT_MODULE
     if (m_parser.isSet("score-video")) {
@@ -487,7 +503,7 @@ void CommandLineParser::processBuiltinArgs(const QCoreApplication& app)
     m_parser.process(app);
 }
 
-mu::IApplication::RunMode CommandLineParser::runMode() const
+IApplication::RunMode CommandLineParser::runMode() const
 {
     return m_runMode;
 }

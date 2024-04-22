@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -50,7 +50,7 @@
 #include "log.h"
 
 using namespace mu;
-using namespace mu::draw;
+using namespace muse::draw;
 using namespace mu::engraving;
 using namespace mu::palette;
 
@@ -110,7 +110,7 @@ void KeyCanvas::clear()
 
 void KeyCanvas::paintEvent(QPaintEvent*)
 {
-    mu::draw::Painter painter(this, "keycanvas");
+    muse::draw::Painter painter(this, "keycanvas");
     painter.setAntialiasing(true);
     qreal wh = double(height());
     qreal ww = double(width());
@@ -128,9 +128,9 @@ void KeyCanvas::paintEvent(QPaintEvent*)
     QRectF r = imatrix.mapRect(QRectF(x, y, w, wh));
 
     RectF background = RectF::fromQRectF(imatrix.mapRect(QRectF(0, 0, ww, wh)));
-    painter.fillRect(background, mu::draw::Color::WHITE);
+    painter.fillRect(background, muse::draw::Color::WHITE);
 
-    draw::Pen pen(engravingConfiguration()->defaultColor());
+    muse::draw::Pen pen(engravingConfiguration()->defaultColor());
     pen.setWidthF(engraving::DefaultStyle::defaultStyle().styleS(Sid::staffLineWidth).val() * gpaletteScore->style().spatium());
     painter.setPen(pen);
 
@@ -284,19 +284,21 @@ void KeyCanvas::snap(Accidental* a)
     double _spatium = gpaletteScore->style().spatium();
     double spatium2 = _spatium * .5;
     double y = a->ldata()->pos().y();
+    double x = KEYEDIT_ACC_ZERO_POINT * _spatium;
     int line = round(y / spatium2);
     y = line * spatium2;
     a->mutldata()->setPosY(y);
     // take default xposition unless Control is pressed
     int i = accidentals.indexOf(a);
     if (i > 0) {
-        qreal accidentalGap = DefaultStyle::baseStyle().styleS(Sid::keysigAccidentalDistance).val();
+        qreal accidentalGap = DefaultStyle::baseStyle().styleS(Sid::keysigAccidentalDistance).val() * _spatium;
         Accidental* prev = accidentals[i - 1];
         double prevX = prev->ldata()->pos().x();
         qreal prevWidth = prev->symWidth(prev->symId());
-        if (!QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
-            a->mutldata()->setPosX(prevX + prevWidth + accidentalGap * _spatium);
-        }
+        x = prevX + prevWidth + accidentalGap;
+    }
+    if (!QGuiApplication::keyboardModifiers().testFlag(Qt::ControlModifier)) {
+        a->mutldata()->setPosX(x);
     }
 }
 
@@ -308,7 +310,7 @@ KeyEditor::KeyEditor(QWidget* parent)
     : QWidget(parent, Qt::WindowFlags(Qt::Dialog | Qt::Window))
 {
     setupUi(this);
-    setWindowTitle(mu::qtrc("palette", "Key signatures"));
+    setWindowTitle(muse::qtrc("palette", "Key signatures"));
 
     setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
@@ -387,14 +389,7 @@ void KeyEditor::addClicked()
 {
     const QList<Accidental*> al = canvas->getAccidentals();
     double spatium = gpaletteScore->style().spatium();
-    double xoff = 10000000.0;
-
-    for (Accidental* a : al) {
-        PointF pos = a->ldata()->pos();
-        if (pos.x() < xoff) {
-            xoff = pos.x();
-        }
-    }
+    double xoff = KEYEDIT_ACC_ZERO_POINT * spatium;
 
     KeySigEvent e;
     e.setCustom(true);

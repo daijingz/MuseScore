@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -54,6 +54,7 @@
 #include "log.h"
 
 using namespace mu;
+using namespace muse::draw;
 using namespace mu::engraving;
 
 namespace mu::engraving {
@@ -183,7 +184,7 @@ std::pair<size_t, size_t> TextCursor::positionToLocalCoord(int position) const
 {
     const TextBase::LayoutData* ldata = m_text->ldata();
     IF_ASSERT_FAILED(ldata) {
-        return { mu::nidx, mu::nidx };
+        return { muse::nidx, muse::nidx };
     }
 
     int currentPosition = 0;
@@ -198,7 +199,7 @@ std::pair<size_t, size_t> TextCursor::positionToLocalCoord(int position) const
         }
     }
 
-    return { mu::nidx, mu::nidx };
+    return { muse::nidx, muse::nidx };
 }
 
 int TextCursor::currentPosition() const
@@ -277,14 +278,14 @@ RectF TextCursor::cursorRect() const
     const TextBlock& tline       = curLine();
     const TextFragment* fragment = tline.fragment(static_cast<int>(column()));
 
-    mu::draw::Font _font  = fragment ? fragment->font(m_text) : m_text->font();
+    Font _font  = fragment ? fragment->font(m_text) : m_text->font();
     if (_font.family() == m_text->style().styleSt(Sid::MusicalSymbolFont)) {
-        _font.setFamily(m_text->style().styleSt(Sid::MusicalTextFont), draw::Font::Type::MusicSymbolText);
+        _font.setFamily(m_text->style().styleSt(Sid::MusicalTextFont), Font::Type::MusicSymbolText);
         if (fragment) {
             _font.setPointSizeF(fragment->format.fontSize());
         }
     }
-    double ascent = mu::draw::FontMetrics::ascent(_font);
+    double ascent = FontMetrics::ascent(_font);
     double h = ascent;
     double x = tline.xpos(column(), m_text);
     double y = tline.y() - ascent * .9;
@@ -616,8 +617,6 @@ bool TextCursor::set(const PointF& p, TextCursor::MoveMode mode)
     if (!m_text->ldata()->bbox().contains(pt)) {
         return false;
     }
-    size_t oldRow    = m_row;
-    size_t oldColumn = m_column;
 
 //      if (_text->_layout.empty())
 //            _text->_layout.append(TextBlock());
@@ -637,13 +636,12 @@ bool TextCursor::set(const PointF& p, TextCursor::MoveMode mode)
     }
     m_column = curLine().column(pt.x(), m_text);
 
-    if (oldRow != m_row || oldColumn != m_column) {
-        m_text->score()->setUpdateAll();
-        if (mode == TextCursor::MoveMode::MoveAnchor) {
-            clearSelection();
-        }
-        updateCursorFormat();
+    m_text->score()->setUpdateAll();
+    if (mode == TextCursor::MoveMode::MoveAnchor) {
+        clearSelection();
     }
+    updateCursorFormat();
+
     return true;
 }
 
@@ -817,9 +815,9 @@ bool TextFragment::operator ==(const TextFragment& f) const
 //   draw
 //---------------------------------------------------------
 
-void TextFragment::draw(mu::draw::Painter* p, const TextBase* t) const
+void TextFragment::draw(Painter* p, const TextBase* t) const
 {
-    mu::draw::Font f(font(t));
+    Font f(font(t));
     f.setPointSizeF(f.pointSizeF() * MScore::pixelRatio);
 #ifndef Q_OS_MACOS
     TextBase::drawTextWorkaround(p, f, pos, text);
@@ -833,7 +831,7 @@ void TextFragment::draw(mu::draw::Painter* p, const TextBase* t) const
 //   drawTextWorkaround
 //---------------------------------------------------------
 
-void TextBase::drawTextWorkaround(mu::draw::Painter* p, mu::draw::Font& f, const mu::PointF& pos, const String& text)
+void TextBase::drawTextWorkaround(Painter* p, Font& f, const PointF& pos, const String& text)
 {
     double mm = p->worldTransform().m11();
     if (!(MScore::pdfPrinting) && (mm < 1.0) && f.bold() && !(f.underline() || f.strike())) {
@@ -848,9 +846,9 @@ void TextBase::drawTextWorkaround(mu::draw::Painter* p, mu::draw::Font& f, const
 //   font
 //---------------------------------------------------------
 
-mu::draw::Font TextFragment::font(const TextBase* t) const
+Font TextFragment::font(const TextBase* t) const
 {
-    mu::draw::Font font;
+    Font font;
 
     double m = format.fontSize();
     double spatiumScaling = 0.0;
@@ -869,14 +867,14 @@ mu::draw::Font TextFragment::font(const TextBase* t) const
     }
 
     String family;
-    draw::Font::Type fontType = draw::Font::Type::Unknown;
+    Font::Type fontType = Font::Type::Unknown;
     if (format.fontFamily() == "ScoreText") {
         if (t->isDynamic() || t->textStyleType() == TextStyleType::OTTAVA || t->textStyleType() == TextStyleType::HARP_PEDAL_DIAGRAM
             || t->textStyleType() == TextStyleType::TUPLET || t->textStyleType() == TextStyleType::PEDAL || t->isStringTunings()
             || t->textStyleType() == TextStyleType::REPEAT_LEFT || t->textStyleType() == TextStyleType::REPEAT_RIGHT) {
             std::string fontName = engravingFonts()->fontByName(t->style().styleSt(Sid::MusicalSymbolFont).toStdString())->family();
             family = String::fromStdString(fontName);
-            fontType = draw::Font::Type::MusicSymbol;
+            fontType = Font::Type::MusicSymbol;
             if (!t->isStringTunings()) {
                 m = MUSICAL_SYMBOLS_DEFAULT_FONT_SIZE;
                 if (t->isDynamic()) {
@@ -902,17 +900,17 @@ mu::draw::Font TextFragment::font(const TextBase* t) const
             m *= 2;
         } else if (t->isTempoText()) {
             family = t->style().styleSt(Sid::MusicalTextFont);
-            fontType = draw::Font::Type::MusicSymbolText;
+            fontType = Font::Type::MusicSymbolText;
             // to keep desired size ratio (based on 20pt symbol size to 12pt text size)
             m *= 5.0 / 3.0;
         } else {
             family = t->style().styleSt(Sid::MusicalTextFont);
-            fontType = draw::Font::Type::MusicSymbolText;
+            fontType = Font::Type::MusicSymbolText;
         }
         // check if all symbols are available
         font.setFamily(family, fontType);
         font.setNoFontMerging(true);
-        mu::draw::FontMetrics fm(font);
+        FontMetrics fm(font);
 
         bool fail = false;
         for (size_t i = 0; i < text.size(); ++i) {
@@ -936,7 +934,7 @@ mu::draw::Font TextFragment::font(const TextBase* t) const
             }
         }
         if (fail) {
-            if (fontType == draw::Font::Type::MusicSymbol) {
+            if (fontType == Font::Type::MusicSymbol) {
                 family = String::fromUtf8(FALLBACK_SYMBOL_FONT);
             } else {
                 family = String::fromUtf8(FALLBACK_SYMBOLTEXT_FONT);
@@ -944,7 +942,7 @@ mu::draw::Font TextFragment::font(const TextBase* t) const
         }
     } else {
         family = format.fontFamily();
-        fontType = draw::Font::Type::Unknown;
+        fontType = Font::Type::Unknown;
         font.setBold(format.bold());
         font.setItalic(format.italic());
         font.setUnderline(format.underline());
@@ -962,7 +960,7 @@ mu::draw::Font TextFragment::font(const TextBase* t) const
 //   draw
 //---------------------------------------------------------
 
-void TextBlock::draw(mu::draw::Painter* p, const TextBase* t) const
+void TextBlock::draw(Painter* p, const TextBase* t) const
 {
     p->translate(0.0, m_y);
     for (const TextFragment& f : m_fragments) {
@@ -1012,14 +1010,14 @@ void TextBlock::layout(const TextBase* t)
     }
 
     if (m_fragments.empty()) {
-        mu::draw::FontMetrics fm = t->fontMetrics();
+        FontMetrics fm = t->fontMetrics();
         m_bbox.setRect(0.0, -fm.ascent(), 1.0, fm.descent());
         m_lineSpacing = fm.lineSpacing();
     } else if (m_fragments.size() == 1 && m_fragments.front().text.isEmpty()) {
         auto fi = m_fragments.begin();
         TextFragment& f = *fi;
         f.pos.setX(x);
-        mu::draw::FontMetrics fm(f.font(t));
+        FontMetrics fm(f.font(t));
         if (f.format.valign() != VerticalAlignment::AlignNormal) {
             double voffset = fm.xHeight() / subScriptSize;   // use original height
             if (f.format.valign() == VerticalAlignment::AlignSubScript) {
@@ -1041,7 +1039,7 @@ void TextBlock::layout(const TextBase* t)
         for (auto fi = m_fragments.begin(); fi != m_fragments.end(); ++fi) {
             TextFragment& f = *fi;
             f.pos.setX(x);
-            mu::draw::FontMetrics fm(f.font(t));
+            FontMetrics fm(f.font(t));
             if (f.format.valign() != VerticalAlignment::AlignNormal) {
                 double voffset = fm.xHeight() / subScriptSize;           // use original height
                 if (f.format.valign() == VerticalAlignment::AlignSubScript) {
@@ -1062,8 +1060,8 @@ void TextBlock::layout(const TextBase* t)
             }
 
             m_bbox   |= fm.tightBoundingRect(f.text).translated(f.pos);
-            mu::draw::Font font = f.font(t);
-            if (font.type() == mu::draw::Font::Type::MusicSymbol || font.type() == mu::draw::Font::Type::MusicSymbolText) {
+            Font font = f.font(t);
+            if (font.type() == Font::Type::MusicSymbol || font.type() == Font::Type::MusicSymbolText) {
                 // SEMI-HACK: Music fonts can have huge linespacing because of tall symbols, so instead of using the
                 // font linespacing value we just use the height of the individual fragment with some added margin
                 m_lineSpacing = std::max(m_lineSpacing, 1.25 * m_bbox.height());
@@ -1123,7 +1121,7 @@ double TextBlock::xpos(size_t column, const TextBase* t) const
         if (column == col) {
             return f.pos.x();
         }
-        mu::draw::FontMetrics fm(f.font(t));
+        FontMetrics fm(f.font(t));
         size_t idx = 0;
         for (size_t i = 0; i < f.text.size(); ++i) {
             ++idx;
@@ -1228,7 +1226,7 @@ int TextBlock::column(double x, TextBase* t) const
             if (f.text.at(i).isHighSurrogate()) {
                 continue;
             }
-            mu::draw::FontMetrics fm(f.font(t));
+            FontMetrics fm(f.font(t));
             double xo = fm.width(f.text.left(idx));
             if (x <= f.pos.x() + px + (xo - px) * .5) {
                 return col;
@@ -1595,7 +1593,7 @@ TextBlock TextBlock::split(int column, TextCursor* cursor)
 
 static String toSymbolXml(Char c)
 {
-    static std::shared_ptr<IEngravingFontsProvider> provider = modularity::ioc()->resolve<IEngravingFontsProvider>("engraving");
+    static std::shared_ptr<IEngravingFontsProvider> provider = muse::modularity::ioc()->resolve<IEngravingFontsProvider>("engraving");
 
     SymId symId = provider->fallbackFont()->fromCode(c.unicode());
     return u"<sym>" + String::fromAscii(SymNames::nameForSymId(symId).ascii()) + u"</sym>";
@@ -1649,8 +1647,8 @@ TextBase::TextBase(const ElementType& type, EngravingItem* parent, TextStyleType
 {
     m_textLineSpacing        = 1.0;
     m_textStyleType          = tid;
-    m_bgColor                = mu::draw::Color::transparent;
-    m_frameColor             = mu::draw::Color::BLACK;
+    m_bgColor                = Color::transparent;
+    m_frameColor             = Color::BLACK;
     m_align                  = { AlignH::LEFT, AlignV::TOP };
     m_frameType              = FrameType::NO_FRAME;
     m_frameWidth             = Spatium(0.1);
@@ -1704,14 +1702,14 @@ TextBase::~TextBase()
 //   drawSelection
 //---------------------------------------------------------
 
-void TextBase::drawSelection(mu::draw::Painter* p, const RectF& r) const
+void TextBase::drawSelection(Painter* p, const RectF& r) const
 {
-    mu::draw::Brush bg(engravingConfiguration()->selectionColor());
-    p->setCompositionMode(mu::draw::CompositionMode::HardLight);
+    Brush bg(engravingConfiguration()->selectionColor());
+    p->setCompositionMode(CompositionMode::HardLight);
     p->setBrush(bg);
     p->setNoPen();
     p->drawRect(r);
-    p->setCompositionMode(mu::draw::CompositionMode::SourceOver);
+    p->setCompositionMode(CompositionMode::SourceOver);
     p->setPen(textColor());
 }
 
@@ -1719,7 +1717,7 @@ void TextBase::drawSelection(mu::draw::Painter* p, const RectF& r) const
 //   textColor
 //---------------------------------------------------------
 
-mu::draw::Color TextBase::textColor() const
+Color TextBase::textColor() const
 {
     return curColor();
 }
@@ -1963,7 +1961,7 @@ void TextBase::layoutFrame(LayoutData* ldata) const
 //      if (empty()) {    // or bbox.width() <= 1.0
     if (ldata->bbox().width() <= 1.0 || ldata->bbox().height() < 1.0) {      // or bbox.width() <= 1.0
         // this does not work for Harmony:
-        mu::draw::FontMetrics fm(font());
+        FontMetrics fm(font());
         double ch = fm.ascent();
         double cw = fm.width('n');
         ldata->frame = RectF(0.0, -ch, cw, ch);
@@ -2634,7 +2632,7 @@ bool TextBase::validateText(String& s)
     }
 
     String ss = u"<data>" + d + u"</data>\n";
-    ByteArray ba = ss.toUtf8();
+    muse::ByteArray ba = ss.toUtf8();
     XmlReader xml(ba);
     while (xml.readNextStartElement()) {
         // LOGD("  token %d <%s>", int(xml.tokenType()), muPrintable(xml.name().toString()));
@@ -2643,8 +2641,9 @@ bool TextBase::validateText(String& s)
         s = d;
         return true;
     }
-    LOGD("xml error at line %lld column %lld: %s", xml.lineNumber(), xml.columnNumber(), muPrintable(xml.errorString()));
-    LOGD("text: |%s|", muPrintable(ss));
+    LOGD() << "xml error at line " << xml.lineNumber() << " column " << xml.columnNumber()
+           << ": " << xml.errorString();
+    LOGD() << "text: |" << ss << "|";
     return false;
 }
 
@@ -2652,13 +2651,13 @@ bool TextBase::validateText(String& s)
 //   font
 //---------------------------------------------------------
 
-mu::draw::Font TextBase::font() const
+Font TextBase::font() const
 {
     double m = size();
     if (sizeIsSpatiumDependent()) {
         m *= spatium() / SPATIUM20;
     }
-    mu::draw::Font f(family(), draw::Font::Type::Unknown);
+    Font f(family(), Font::Type::Unknown);
     f.setPointSizeF(m);
     f.setBold(bold());
     f.setItalic(italic());
@@ -2676,9 +2675,9 @@ mu::draw::Font TextBase::font() const
 //   fontMetrics
 //---------------------------------------------------------
 
-mu::draw::FontMetrics TextBase::fontMetrics() const
+FontMetrics TextBase::fontMetrics() const
 {
-    return mu::draw::FontMetrics(font());
+    return FontMetrics(font());
 }
 
 bool TextBase::isPropertyLinkedToMaster(Pid id) const
@@ -2782,10 +2781,10 @@ bool TextBase::setProperty(Pid pid, const PropertyValue& v)
         setFrameRound(v.toInt());
         break;
     case Pid::FRAME_FG_COLOR:
-        setFrameColor(v.value<mu::draw::Color>());
+        setFrameColor(v.value<Color>());
         break;
     case Pid::FRAME_BG_COLOR:
-        setBgColor(v.value<mu::draw::Color>());
+        setBgColor(v.value<Color>());
         break;
     case Pid::TEXT:
         setXmlText(v.value<String>());
@@ -2992,7 +2991,7 @@ void TextBase::notifyAboutTextCursorChanged()
 #ifndef ENGRAVING_NO_ACCESSIBILITY
     using namespace muse::accessibility;
     if (accessible()) {
-        accessible()->accessiblePropertyChanged().send(IAccessible::Property::TextCursor, Val());
+        accessible()->accessiblePropertyChanged().send(IAccessible::Property::TextCursor, muse::Val());
     }
 #endif
 }
@@ -3003,7 +3002,7 @@ void TextBase::notifyAboutTextInserted(int startPosition, int endPosition, const
     using namespace muse::accessibility;
     if (accessible()) {
         auto range = IAccessible::TextRange(startPosition, endPosition, text);
-        accessible()->accessiblePropertyChanged().send(IAccessible::Property::TextInsert, Val::fromQVariant(range.toMap()));
+        accessible()->accessiblePropertyChanged().send(IAccessible::Property::TextInsert, muse::Val::fromQVariant(range.toMap()));
     }
 #else
     UNUSED(startPosition);
@@ -3018,7 +3017,7 @@ void TextBase::notifyAboutTextRemoved(int startPosition, int endPosition, const 
     using namespace muse::accessibility;
     if (accessible()) {
         auto range = IAccessible::TextRange(startPosition, endPosition, text);
-        accessible()->accessiblePropertyChanged().send(IAccessible::Property::TextRemove, Val::fromQVariant(range.toMap()));
+        accessible()->accessiblePropertyChanged().send(IAccessible::Property::TextRemove, muse::Val::fromQVariant(range.toMap()));
     }
 #else
     UNUSED(startPosition);
@@ -3177,9 +3176,9 @@ TextCursor* TextBase::cursorFromEditData(const EditData& ed)
 //    draw edit mode decorations
 //---------------------------------------------------------
 
-void TextBase::drawEditMode(mu::draw::Painter* p, EditData& ed, double currentViewScaling)
+void TextBase::drawEditMode(Painter* p, EditData& ed, double currentViewScaling)
 {
-    using namespace mu::draw;
+    using namespace muse::draw;
     PointF pos(canvasPos());
     p->translate(pos);
 
@@ -3444,7 +3443,7 @@ void TextBase::undoChangeProperty(Pid id, const PropertyValue& v, PropertyFlags 
         Pid::TEXT_SCRIPT_ALIGN
     };
 
-    if (!mu::contains(CHARACTER_SPECIFIC_PROPERTIES, id)) {
+    if (!muse::contains(CHARACTER_SPECIFIC_PROPERTIES, id)) {
         EngravingItem::undoChangeProperty(id, v, ps);
         return;
     }

@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -46,7 +46,8 @@
 #include "log.h"
 
 using namespace mu::notation;
-using namespace mu::ui;
+using namespace muse;
+using namespace muse::ui;
 using namespace mu::engraving;
 
 static const QChar GO_UP_ICON = iconCodeToChar(IconCode::Code::ARROW_UP);
@@ -132,7 +133,7 @@ void EditStaff::setStaff(Staff* s, const Fraction& tick)
     Part* part = m_orgStaff->part();
     mu::engraving::Score* score = part->score();
 
-    auto it = mu::findLessOrEqual(part->instruments(), tick.ticks());
+    auto it = muse::findLessOrEqual(part->instruments(), tick.ticks());
     if (it == part->instruments().cend()) {
         return;
     }
@@ -217,7 +218,7 @@ void EditStaff::updateInstrument()
     if (templ) {
         instrumentName->setText(formatInstrumentTitle(templ->trackName, templ->trait));
     } else {
-        instrumentName->setText(qtrc("notation/editstaff", "Unknown"));
+        instrumentName->setText(muse::qtrc("notation/editstaff", "Unknown"));
     }
 
     m_minPitchA = m_instrument.minPitchA();
@@ -531,8 +532,8 @@ void EditStaff::applyPartProperties()
     String _sn = shortName->toPlainText();
     String _ln = longName->toPlainText();
     if (!mu::engraving::Text::validateText(_sn) || !mu::engraving::Text::validateText(_ln)) {
-        interactive()->warning(trc("notation/staffpartproperties", "Invalid instrument name"),
-                               trc("notation/staffpartproperties", "The instrument name is invalid."));
+        interactive()->warning(muse::trc("notation/staffpartproperties", "Invalid instrument name"),
+                               muse::trc("notation/staffpartproperties", "The instrument name is invalid."));
         return;
     }
     QString sn = _sn;
@@ -661,7 +662,7 @@ void EditStaff::editStringDataClicked()
 
 QString EditStaff::midiCodeToStr(int midiCode)
 {
-    return QString::fromStdString(mu::pitchToString(midiCode));
+    return QString::fromStdString(muse::pitchToString(midiCode));
 }
 
 void EditStaff::showStaffTypeDialog()

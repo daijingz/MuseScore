@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -28,9 +28,11 @@
 #include "log.h"
 
 using namespace mu;
-using namespace mu::ui;
-using namespace mu::draw;
 using namespace mu::notation;
+using namespace muse;
+using namespace muse::ui;
+using namespace muse::draw;
+using namespace muse::actions;
 
 static constexpr qreal SCROLL_LIMIT_OFF_OVERSCROLL_FACTOR = 0.75;
 
@@ -40,7 +42,7 @@ static void compensateFloatPart(RectF& rect)
 }
 
 AbstractNotationPaintView::AbstractNotationPaintView(QQuickItem* parent)
-    : uicomponents::QuickPaintedView(parent)
+    : muse::uicomponents::QuickPaintedView(parent)
 {
     setFlag(ItemHasContents, true);
     setFlag(ItemAcceptsDrops, true);
@@ -123,7 +125,7 @@ void AbstractNotationPaintView::initBackground()
 
 void AbstractNotationPaintView::initNavigatorOrientation()
 {
-    configuration()->canvasOrientation().ch.onReceive(this, [this](mu::Orientation) {
+    configuration()->canvasOrientation().ch.onReceive(this, [this](muse::Orientation) {
         moveCanvasToPosition(PointF(0, 0));
     });
 }
@@ -196,7 +198,7 @@ void AbstractNotationPaintView::selectOnNavigationActive()
     interaction->selectFirstElement(false);
 }
 
-bool AbstractNotationPaintView::canReceiveAction(const actions::ActionCode& actionCode) const
+bool AbstractNotationPaintView::canReceiveAction(const ActionCode& actionCode) const
 {
     if (actionCode == "diagnostic-notationview-redraw") {
         return true;
@@ -565,8 +567,8 @@ void AbstractNotationPaintView::paint(QPainter* qp)
     RectF rect = RectF::fromQRectF(qp->clipBoundingRect());
     rect = correctDrawRect(rect);
 
-    mu::draw::Painter mup(qp, objectName().toStdString());
-    mu::draw::Painter* painter = &mup;
+    muse::draw::Painter mup(qp, objectName().toStdString());
+    muse::draw::Painter* painter = &mup;
 
     paintBackground(rect, painter);
 
@@ -629,7 +631,7 @@ void AbstractNotationPaintView::onNotationSetup()
     });
 }
 
-void AbstractNotationPaintView::paintBackground(const RectF& rect, draw::Painter* painter)
+void AbstractNotationPaintView::paintBackground(const RectF& rect, muse::draw::Painter* painter)
 {
     TRACEFUNC;
 
@@ -973,7 +975,7 @@ bool AbstractNotationPaintView::doMoveCanvas(qreal dx, qreal dy)
     return true;
 }
 
-void AbstractNotationPaintView::scheduleRedraw(const mu::RectF& rect)
+void AbstractNotationPaintView::scheduleRedraw(const muse::RectF& rect)
 {
     QRect qrect = correctDrawRect(rect).toQRect();
     update(qrect);
@@ -1315,14 +1317,14 @@ void AbstractNotationPaintView::onPlayingChanged()
 
     if (isPlaying) {
         float playPosSec = playbackController()->playbackPositionInSeconds();
-        midi::tick_t tick = notationPlayback()->secToTick(playPosSec);
+        muse::midi::tick_t tick = notationPlayback()->secToTick(playPosSec);
         movePlaybackCursor(tick);
     } else {
         scheduleRedraw();
     }
 }
 
-void AbstractNotationPaintView::movePlaybackCursor(midi::tick_t tick)
+void AbstractNotationPaintView::movePlaybackCursor(muse::midi::tick_t tick)
 {
     TRACEFUNC;
 

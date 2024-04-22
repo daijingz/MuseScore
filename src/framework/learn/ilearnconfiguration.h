@@ -19,13 +19,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef MU_CLOUD_ILEARNCONFIGURATION_H
-#define MU_CLOUD_ILEARNCONFIGURATION_H
+#ifndef MUSE_LEARN_ILEARNCONFIGURATION_H
+#define MUSE_LEARN_ILEARNCONFIGURATION_H
 
 #include "modularity/imoduleinterface.h"
 #include "network/networktypes.h"
 
-namespace mu::learn {
+namespace muse::learn {
 class ILearnConfiguration : MODULE_EXPORT_INTERFACE
 {
     INTERFACE_ID(ILearnConfiguration)
@@ -40,4 +40,4 @@ public:
 };
 }
 
-#endif // MU_CLOUD_ILEARNCONFIGURATION_H
+#endif // MUSE_LEARN_ILEARNCONFIGURATION_H

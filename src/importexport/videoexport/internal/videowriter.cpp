@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -49,13 +49,13 @@ bool VideoWriter::supportsUnitType(UnitType unitType) const
     return std::find(unitTypes.cbegin(), unitTypes.cend(), unitType) != unitTypes.cend();
 }
 
-mu::Ret VideoWriter::write(INotationProjectPtr, QIODevice&, const Options&)
+Ret VideoWriter::write(INotationProjectPtr, QIODevice&, const Options&)
 {
     NOT_SUPPORTED;
     return make_ret(Ret::Code::NotSupported);
 }
 
-mu::Ret VideoWriter::write(INotationProjectPtr project, const io::path_t& filePath, const Options&)
+Ret VideoWriter::write(INotationProjectPtr project, const muse::io::path_t& filePath, const Options&)
 {
     Config cfg;
 
@@ -110,7 +110,7 @@ mu::Ret VideoWriter::write(INotationProjectPtr project, const io::path_t& filePa
     return ret;
 }
 
-mu::Ret VideoWriter::generatePagedOriginalVideo(INotationProjectPtr project, const io::path_t& filePath, const Config& config)
+Ret VideoWriter::generatePagedOriginalVideo(INotationProjectPtr project, const muse::io::path_t& filePath, const Config& config)
 {
     // --score-video -o ./simple5.mp4 ./simple5.mscz
 
@@ -251,5 +251,5 @@ mu::Ret VideoWriter::generatePagedOriginalVideo(INotationProjectPtr project, con
 
     encoder.close();
 
-    return make_ok();
+    return muse::make_ok();
 }

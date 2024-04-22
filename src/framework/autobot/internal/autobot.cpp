@@ -34,8 +34,8 @@
 
 #include "log.h"
 
-using namespace mu;
-using namespace mu::autobot;
+using namespace muse;
+using namespace muse::autobot;
 
 void Autobot::init()
 {
@@ -87,8 +87,8 @@ void Autobot::affectOnServices()
         modularity::ioc()->registerExport<IInteractive>("autobot", m_autobotInteractive);
     }
 
-    m_affectedServiceState.fontDisabledMerging = draw::Font::g_disableFontMerging;
-    draw::Font::g_disableFontMerging = true;
+    m_affectedServiceState.fontDisabledMerging = muse::draw::Font::g_disableFontMerging;
+    muse::draw::Font::g_disableFontMerging = true;
 }
 
 void Autobot::restoreAffectOnServices()
@@ -103,7 +103,7 @@ void Autobot::restoreAffectOnServices()
         modularity::ioc()->registerExport<IInteractive>("autobot", realInteractive);
     }
 
-    draw::Font::g_disableFontMerging = m_affectedServiceState.fontDisabledMerging;
+    muse::draw::Font::g_disableFontMerging = m_affectedServiceState.fontDisabledMerging;
 }
 
 void Autobot::loadContext(ITestCaseContextPtr ctx, const io::path_t& context, const std::string& contextVal, ScriptEngine* e)
@@ -237,7 +237,7 @@ void Autobot::setSpeedMode(SpeedMode mode)
     m_runner.setSpeedMode(mode);
 }
 
-mu::async::Channel<SpeedMode> Autobot::speedModeChanged() const
+async::Channel<SpeedMode> Autobot::speedModeChanged() const
 {
     return m_runner.speedModeChanged();
 }
@@ -354,12 +354,12 @@ IAutobot::Status Autobot::status() const
     return m_status;
 }
 
-mu::async::Channel<mu::io::path_t, IAutobot::Status> Autobot::statusChanged() const
+async::Channel<io::path_t, IAutobot::Status> Autobot::statusChanged() const
 {
     return m_statusChanged;
 }
 
-mu::async::Channel<StepInfo, mu::Ret> Autobot::stepStatusChanged() const
+async::Channel<StepInfo, Ret> Autobot::stepStatusChanged() const
 {
     return m_stepStatusChanged;
 }

@@ -24,7 +24,7 @@
 
 #include "audio/isoundfontrepository.h"
 
-namespace mu::audio {
+namespace muse::audio {
 class SoundFontRepositoryStub : public ISoundFontRepository
 {
 public:
@@ -32,7 +32,7 @@ public:
     const synth::SoundFontsMap& soundFonts() const override;
     async::Notification soundFontsChanged() const override;
 
-    mu::Ret addSoundFont(const synth::SoundFontPath& path) override;
+    Ret addSoundFont(const synth::SoundFontPath& path) override;
 };
 }
 

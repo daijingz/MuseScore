@@ -20,8 +20,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef MU_UI_UIENGINE_H
-#define MU_UI_UIENGINE_H
+#ifndef MUSE_UI_UIENGINE_H
+#define MUSE_UI_UIENGINE_H
 
 #include <QObject>
 #include <memory>
@@ -35,7 +35,7 @@
 
 #include "languages/ilanguagesservice.h"
 
-namespace mu::ui {
+namespace muse::ui {
 class UiEngine : public QObject, public IUiEngine
 {
     Q_OBJECT
@@ -96,4 +96,4 @@ private:
 };
 }
 
-#endif // MU_UI_UIENGINE_H
+#endif // MUSE_UI_UIENGINE_H

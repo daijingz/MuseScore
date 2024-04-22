@@ -27,7 +27,8 @@
 
 #include "log.h"
 
-using namespace mu::ui;
+using namespace muse;
+using namespace muse::ui;
 using namespace muse::accessibility;
 
 AccessibleItem::AccessibleItem(QObject* parent)
@@ -355,12 +356,12 @@ int AccessibleItem::accessibleCharacterCount() const
     return text().size();
 }
 
-mu::async::Channel<IAccessible::Property, mu::Val> AccessibleItem::accessiblePropertyChanged() const
+async::Channel<IAccessible::Property, Val> AccessibleItem::accessiblePropertyChanged() const
 {
     return m_accessiblePropertyChanged;
 }
 
-mu::async::Channel<IAccessible::State, bool> AccessibleItem::accessibleStateChanged() const
+async::Channel<IAccessible::State, bool> AccessibleItem::accessibleStateChanged() const
 {
     return m_accessibleStateChanged;
 }

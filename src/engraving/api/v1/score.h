@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -167,7 +167,7 @@ public:
 
     /// \endcond
 
-    /// Returns as a string the metatag named \p tag
+    /// muse::Returns as a string the metatag named \p tag
     Q_INVOKABLE QString metaTag(const QString& tag) const { return score()->metaTag(tag); }
     /// Sets the metatag named \p tag to \p val
     Q_INVOKABLE void setMetaTag(const QString& tag, const QString& val) { score()->setMetaTag(tag, val); }

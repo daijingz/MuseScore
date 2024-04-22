@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -39,7 +39,7 @@
 #include "log.h"
 
 using namespace mu;
-using namespace mu::draw;
+using namespace muse::draw;
 using namespace mu::engraving;
 
 namespace mu::engraving {
@@ -434,13 +434,13 @@ int Hairpin::subtype() const
 
 DynamicType Hairpin::dynamicTypeFrom() const
 {
-    ByteArray ba = beginText().toAscii();
+    muse::ByteArray ba = beginText().toAscii();
     return TConv::dynamicType(ba.constChar());
 }
 
 DynamicType Hairpin::dynamicTypeTo() const
 {
-    ByteArray ba = endText().toAscii();
+    muse::ByteArray ba = endText().toAscii();
     return TConv::dynamicType(ba.constChar());
 }
 
@@ -631,13 +631,13 @@ String Hairpin::accessibleInfo() const
     String rez = TextLineBase::accessibleInfo();
     switch (hairpinType()) {
     case HairpinType::CRESC_HAIRPIN:
-        rez += u": " + mtrc("engraving", "Crescendo");
+        rez += u": " + muse::mtrc("engraving", "Crescendo");
         break;
     case HairpinType::DECRESC_HAIRPIN:
-        rez += u": " + mtrc("engraving", "Decrescendo");
+        rez += u": " + muse::mtrc("engraving", "Decrescendo");
         break;
     default:
-        rez += u": " + mtrc("engraving", "Custom");
+        rez += u": " + muse::mtrc("engraving", "Custom");
     }
     return rez;
 }

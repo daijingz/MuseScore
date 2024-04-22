@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -55,7 +55,7 @@ bool PropertyValue::operator ==(const PropertyValue& v) const
 
     //! HACK Temporary hack for Spatium comparisons (maybe one type is Spatium and another type is real)
     if (v.m_type == P_TYPE::SPATIUM || m_type == P_TYPE::SPATIUM) {
-        return RealIsEqual(v.value<double>(), value<double>());
+        return muse::RealIsEqual(v.value<double>(), value<double>());
     }
 
     //! HACK Temporary hack for Fraction comparisons
@@ -66,7 +66,7 @@ bool PropertyValue::operator ==(const PropertyValue& v) const
 
     if (v.m_type == P_TYPE::REAL) {
         assert(m_type == P_TYPE::REAL);
-        return RealIsEqual(v.value<double>(), value<double>());
+        return muse::RealIsEqual(v.value<double>(), value<double>());
     }
 
     assert(m_data);
@@ -112,7 +112,7 @@ QVariant PropertyValue::toQVariant() const
 
     // Draw
     case P_TYPE::SYMID:       return static_cast<int>(value<SymId>());
-    case P_TYPE::COLOR:       return value<draw::Color>().toQColor();
+    case P_TYPE::COLOR:       return value<Color>().toQColor();
     case P_TYPE::ORNAMENT_STYLE: return static_cast<int>(value<OrnamentStyle>());
     case P_TYPE::ORNAMENT_INTERVAL: {
         OrnamentInterval interval = value<OrnamentInterval>();

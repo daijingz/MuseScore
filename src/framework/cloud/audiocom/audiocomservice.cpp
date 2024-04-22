@@ -34,9 +34,9 @@
 
 #include "log.h"
 
-using namespace mu;
-using namespace mu::cloud;
-using namespace mu::network;
+using namespace muse;
+using namespace muse::cloud;
+using namespace muse::network;
 
 static const QString AUDIOCOM_CLOUD_TITLE("Audio.com");
 static const QString AUDIOCOM_CLOUD_URL("https://audio.com");
@@ -66,7 +66,7 @@ IAuthorizationServicePtr AudioComService::authorization()
     return shared_from_this();
 }
 
-cloud::CloudInfo AudioComService::cloudInfo() const
+CloudInfo AudioComService::cloudInfo() const
 {
     return {
         AUDIO_COM_CLOUD_CODE,
@@ -77,7 +77,7 @@ cloud::CloudInfo AudioComService::cloudInfo() const
     };
 }
 
-cloud::AbstractCloudService::ServerConfig AudioComService::serverConfig() const
+AbstractCloudService::ServerConfig AudioComService::serverConfig() const
 {
     ServerConfig serverConfig;
     serverConfig.serverCode = AUDIO_COM_CLOUD_CODE;
@@ -124,7 +124,7 @@ RequestHeaders AudioComService::headers(const QString& token) const
     return headers;
 }
 
-mu::Ret AudioComService::downloadAccountInfo()
+Ret AudioComService::downloadAccountInfo()
 {
     TRACEFUNC;
 
@@ -156,7 +156,7 @@ mu::Ret AudioComService::downloadAccountInfo()
         setAccountInfo(AccountInfo());
     }
 
-    return make_ok();
+    return muse::make_ok();
 }
 
 bool AudioComService::doUpdateTokens()
@@ -242,7 +242,7 @@ ProgressPtr AudioComService::uploadAudio(QIODevice& audioData, const QString& au
     return progress;
 }
 
-mu::Ret AudioComService::doUploadAudio(network::INetworkManagerPtr uploadManager, QIODevice& audioData, const QString& audioFormat)
+Ret AudioComService::doUploadAudio(network::INetworkManagerPtr uploadManager, QIODevice& audioData, const QString& audioFormat)
 {
     TRACEFUNC;
 

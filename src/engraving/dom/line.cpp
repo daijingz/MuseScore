@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -455,7 +455,7 @@ Segment* LineSegment::findSegmentForGrip(Grip grip, PointF pos) const
     System* sys = system();
     const std::vector<System*> foundSystems = score()->searchSystem(pos, sys, spacingFactor);
 
-    if (!foundSystems.empty() && !mu::contains(foundSystems, sys) && foundSystems[0]->staves().size()) {
+    if (!foundSystems.empty() && !muse::contains(foundSystems, sys) && foundSystems[0]->staves().size()) {
         sys = foundSystems[0];
     }
 
@@ -487,7 +487,7 @@ PointF LineSegment::deltaRebaseLeft(const Segment* oldSeg, const Segment* newSeg
 ///   Helper function for anchors rebasing when dragging.
 //---------------------------------------------------------
 
-PointF LineSegment::deltaRebaseRight(const Segment* oldSeg, const Segment* newSeg, staff_idx_t staffIndex)
+PointF LineSegment::deltaRebaseRight(const Segment* oldSeg, const Segment* newSeg)
 {
     if (oldSeg == newSeg) {
         return PointF();
@@ -960,7 +960,7 @@ bool SLine::setProperty(Pid id, const PropertyValue& v)
         m_diagonal = v.toBool();
         break;
     case Pid::COLOR:
-        m_lineColor = v.value<mu::draw::Color>();
+        m_lineColor = v.value<Color>();
         break;
     case Pid::LINE_WIDTH:
         if (v.type() == P_TYPE::MILLIMETRE) {

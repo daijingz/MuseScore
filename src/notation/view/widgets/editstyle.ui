@@ -344,7 +344,7 @@
                  <item row="0" column="2">
                   <widget class="QCheckBox" name="optimizeStyleCheckbox">
                    <property name="toolTip">
-                    <string>MuseScore will change the style to suit the font better</string>
+                    <string>MuseScore Studio will change the style to suit the font better</string>
                    </property>
                    <property name="text">
                     <string>Automatically load style settings based on font</string>
@@ -873,7 +873,7 @@
               </property>
               <layout class="QGridLayout" name="gridLayout_4">
                <item row="3" column="0" colspan="9">
-                <widget class="mu::uicomponents::RadioButtonGroupBox" name="disableVerticalSpread">
+                <widget class="muse::uicomponents::RadioButtonGroupBox" name="disableVerticalSpread">
                  <property name="title">
                   <string>Disable vertical justification of staves</string>
                  </property>
@@ -1423,7 +1423,7 @@
                 </spacer>
                </item>
                <item row="2" column="0" colspan="9">
-                <widget class="mu::uicomponents::RadioButtonGroupBox" name="enableVerticalSpread">
+                <widget class="muse::uicomponents::RadioButtonGroupBox" name="enableVerticalSpread">
                  <property name="title">
                   <string>Enable vertical justification of staves</string>
                  </property>
@@ -13772,7 +13772,7 @@ By default, they will be placed such as that their right end are at the same lev
                <item>
                 <widget class="QGroupBox" name="groupBox_2">
                  <property name="title">
-                  <string>Parenthesis indicating ties</string>
+                  <string>Parentheses indicating ties</string>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_601">
                   <item>
@@ -13785,7 +13785,7 @@ By default, they will be placed such as that their right end are at the same lev
                   <item>
                    <widget class="QRadioButton" name="tabParenthMeasure">
                     <property name="text">
-                     <string>Always show at the start of a bar</string>
+                     <string>Always show at the start of a measure</string>
                     </property>
                    </widget>
                   </item>
@@ -13799,8 +13799,7 @@ By default, they will be placed such as that their right end are at the same lev
                   <item>
                    <widget class="QCheckBox" name="tabParenthArticulation">
                     <property name="text">
-                     <string>Always show parenthesised fret marks when 
-articulation markings are present</string>
+                     <string>Always show parenthesized fret marks when articulation markings are present</string>
                     </property>
                    </widget>
                   </item>
@@ -14478,7 +14477,7 @@ articulation markings are present</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>mu::uicomponents::RadioButtonGroupBox</class>
+   <class>muse::uicomponents::RadioButtonGroupBox</class>
    <extends>QGroupBox</extends>
    <header>uicomponents/view/widgets/radiobuttongroupbox.h</header>
    <container>1</container>

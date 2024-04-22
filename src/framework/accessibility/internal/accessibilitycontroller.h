@@ -42,7 +42,7 @@
 class QAccessibleInterface;
 class QAccessibleEvent;
 
-namespace mu::diagnostics {
+namespace muse::diagnostics {
 class DiagnosticAccessibleModel;
 }
 
@@ -51,9 +51,9 @@ class AccessibilityController : public IAccessibilityController, public IAccessi
     public std::enable_shared_from_this<AccessibilityController>
 {
 public:
-    Inject<mu::IApplication> application;
-    Inject<mu::ui::IMainWindow> mainWindow;
-    Inject<mu::ui::IInteractiveProvider> interactiveProvider;
+    Inject<IApplication> application;
+    Inject<ui::IMainWindow> mainWindow;
+    Inject<ui::IInteractiveProvider> interactiveProvider;
     Inject<IAccessibilityConfiguration> configuration;
 
 public:
@@ -128,7 +128,7 @@ public:
 
 private:
 
-    friend class mu::diagnostics::DiagnosticAccessibleModel;
+    friend class muse::diagnostics::DiagnosticAccessibleModel;
 
     struct Item
     {

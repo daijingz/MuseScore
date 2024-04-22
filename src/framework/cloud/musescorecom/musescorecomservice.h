@@ -19,8 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef MU_CLOUD_MUSESCORECOMSERVICE_H
-#define MU_CLOUD_MUSESCORECOMSERVICE_H
+#ifndef MUSE_CLOUD_MUSESCORECOMSERVICE_H
+#define MUSE_CLOUD_MUSESCORECOMSERVICE_H
 
 #include <memory>
 
@@ -33,7 +33,7 @@
 
 #include "musescorecom/imusescorecomservice.h"
 
-namespace mu::cloud {
+namespace muse::cloud {
 class MuseScoreComService : public IMuseScoreComService, public AbstractCloudService,
     public std::enable_shared_from_this<MuseScoreComService>
 {
@@ -50,17 +50,17 @@ public:
 
     QUrl scoreManagerUrl() const override;
 
-    mu::ProgressPtr uploadScore(QIODevice& scoreData, const QString& title, Visibility visibility = Visibility::Private,
-                                const QUrl& sourceUrl = QUrl(), int revisionId = 0) override;
-    mu::ProgressPtr uploadAudio(QIODevice& audioData, const QString& audioFormat, const QUrl& sourceUrl) override;
+    ProgressPtr uploadScore(QIODevice& scoreData, const QString& title, Visibility visibility = Visibility::Private,
+                            const QUrl& sourceUrl = QUrl(), int revisionId = 0) override;
+    ProgressPtr uploadAudio(QIODevice& audioData, const QString& audioFormat, const QUrl& sourceUrl) override;
 
     RetVal<ScoreInfo> downloadScoreInfo(const QUrl& sourceUrl) override;
     RetVal<ScoreInfo> downloadScoreInfo(int scoreId) override;
 
     async::Promise<ScoresList> downloadScoresList(int scoresPerBatch, int batchNumber) override;
 
-    mu::ProgressPtr downloadScore(int scoreId, QIODevice& scoreData, const QString& hash = QString(),
-                                  const QString& secret = QString()) override;
+    ProgressPtr downloadScore(int scoreId, QIODevice& scoreData, const QString& hash = QString(),
+                              const QString& secret = QString()) override;
 
 private:
     ServerConfig serverConfig() const override;
@@ -76,10 +76,11 @@ private:
     Ret doDownloadScore(network::INetworkManagerPtr downloadManager, int scoreId, QIODevice& scoreData,
                         const QString& hash = QString(), const QString& secret = QString());
 
-    mu::RetVal<mu::ValMap> doUploadScore(network::INetworkManagerPtr uploadManager, QIODevice& scoreData, const QString& title,
-                                         Visibility visibility, const QUrl& sourceUrl = QUrl(), int revisionId = 0);
+    RetVal<ValMap> doUploadScore(network::INetworkManagerPtr uploadManager, QIODevice& scoreData, const QString& title,
+                                 Visibility visibility, const QUrl& sourceUrl = QUrl(), int revisionId = 0);
+
     Ret doUploadAudio(network::INetworkManagerPtr uploadManager, QIODevice& audioData, const QString& audioFormat, const QUrl& sourceUrl);
 };
 }
 
-#endif // MU_CLOUD_MUSESCORECOMSERVICE_H
+#endif // MUSE_CLOUD_MUSESCORECOMSERVICE_H

@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -208,7 +208,7 @@ bool MeiExporter::writeHeader()
         pugi::xml_node date = pubStmt.append_child("date");
 
         // date
-        String dateStr = DateTime::currentDateTime().toString();
+        String dateStr = muse::DateTime::currentDateTime().toString();
         date.append_attribute("isodate") = dateStr.toStdString().c_str();
 
         if (!m_score->metaTag(u"copyright").isEmpty()) {
@@ -1273,7 +1273,14 @@ bool MeiExporter::writeNote(const Note* note, const Chord* chord, const Staff* s
 
     if (meiAccid.HasAccid() || meiAccid.HasAccidGes()) {
         pugi::xml_node accidNode = m_currentNode.append_child();
-        meiAccid.Write(accidNode, this->getLayerXmlIdFor(ACCID_L));
+        Accidental* acc = note->accidental();
+        if (acc) {
+            Convert::colorToMEI(acc, meiAccid);
+            std::string xmlIdAcc = this->getXmlIdFor(acc, 'a');
+            meiAccid.Write(accidNode, xmlIdAcc);
+        } else {
+            meiAccid.Write(accidNode, this->getLayerXmlIdFor(ACCID_L));
+        }
     }
 
     // non critical assert
@@ -1414,9 +1421,13 @@ bool MeiExporter::writeVerse(const Lyrics* lyrics)
 
     libmei::Verse meiVerse;
     meiVerse.SetN(String::number(lyrics->no() + 1).toStdString());
+    if (lyrics->propertyFlags(engraving::Pid::PLACEMENT) == engraving::PropertyFlags::UNSTYLED) {
+        meiVerse.SetPlace(Convert::placeToMEI(lyrics->placement()));
+    }
     Convert::colorToMEI(lyrics, meiVerse);
     m_currentNode = m_currentNode.append_child();
-    meiVerse.Write(m_currentNode, this->getLayerXmlIdFor(VERSE_L));
+    std::string xmlId = this->getXmlIdFor(lyrics, 'v');
+    meiVerse.Write(m_currentNode, xmlId);
 
     // Split the syllable into line blocks
     Convert::textWithSmufl lineBlocks;

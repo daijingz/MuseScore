@@ -19,8 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef MU_CLOUD_AUDIOCOMSERVICE_H
-#define MU_CLOUD_AUDIOCOMSERVICE_H
+#ifndef MUSE_CLOUD_AUDIOCOMSERVICE_H
+#define MUSE_CLOUD_AUDIOCOMSERVICE_H
 
 #include <memory>
 
@@ -29,13 +29,12 @@
 #include "modularity/ioc.h"
 #include "icloudconfiguration.h"
 #include "network/inetworkmanagercreator.h"
-#include "multiinstances/imultiinstancesprovider.h"
 
 #include "internal/abstractcloudservice.h"
 
 #include "audiocom/iaudiocomservice.h"
 
-namespace mu::cloud {
+namespace muse::cloud {
 class AudioComService : public IAudioComService, public AbstractCloudService, public std::enable_shared_from_this<AudioComService>
 {
     INJECT(ICloudConfiguration, configuration)
@@ -48,8 +47,8 @@ public:
 
     CloudInfo cloudInfo() const override;
 
-    mu::ProgressPtr uploadAudio(QIODevice& audioData, const QString& audioFormat, const QString& title, const QUrl& url,
-                                Visibility visibility = Visibility::Private, bool replaceExisting = false) override;
+    ProgressPtr uploadAudio(QIODevice& audioData, const QString& audioFormat, const QString& title, const QUrl& url,
+                            Visibility visibility = Visibility::Private, bool replaceExisting = false) override;
 
 private:
     ServerConfig serverConfig() const override;
@@ -75,4 +74,4 @@ private:
 };
 }
 
-#endif // MU_CLOUD_AUDIOCOMSERVICE_H
+#endif // MUSE_CLOUD_AUDIOCOMSERVICE_H

@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -120,7 +120,7 @@ void SpannerSegment::spatiumChanged(double ov, double nv)
 //   mimeData
 //---------------------------------------------------------
 
-ByteArray SpannerSegment::mimeData(const PointF& dragOffset) const
+muse::ByteArray SpannerSegment::mimeData(const PointF& dragOffset) const
 {
     if (dragOffset.isNull()) { // where is dragOffset used?
         return spanner()->mimeData(dragOffset);
@@ -305,7 +305,7 @@ void SpannerSegment::setVisible(bool f)
 //   setColor
 //---------------------------------------------------------
 
-void SpannerSegment::setColor(const mu::draw::Color& col)
+void SpannerSegment::setColor(const Color& col)
 {
     if (m_spanner) {
         for (SpannerSegment* ss : m_spanner->spannerSegments()) {
@@ -1152,7 +1152,7 @@ void Spanner::setAutoplace(bool f)
 //   setColor
 //---------------------------------------------------------
 
-void Spanner::setColor(const mu::draw::Color& col)
+void Spanner::setColor(const Color& col)
 {
     for (SpannerSegment* ss : spannerSegments()) {
         ss->setColor(col);
@@ -1465,8 +1465,8 @@ bool Spanner::isUserModified() const
 
 void Spanner::eraseSpannerSegments()
 {
-    DeleteAll(m_segments);
-    DeleteAll(m_unusedSegments);
+    muse::DeleteAll(m_segments);
+    muse::DeleteAll(m_unusedSegments);
     m_segments.clear();
     m_unusedSegments.clear();
 }
@@ -1497,14 +1497,14 @@ String SpannerSegment::formatBarsAndBeats() const
 String SpannerSegment::formatStartBarsAndBeats(const Segment* segment) const
 {
     std::pair<int, float> barbeat = segment->barbeat();
-    return mtrc("engraving", "Start measure: %1; Start beat: %2")
+    return muse::mtrc("engraving", "Start measure: %1; Start beat: %2")
            .arg(String::number(barbeat.first), String::number(barbeat.second));
 }
 
 String SpannerSegment::formatEndBarsAndBeats(const Segment* segment) const
 {
     std::pair<int, float> barbeat = segment->barbeat();
-    return mtrc("engraving", "End measure: %1; End beat: %2")
+    return muse::mtrc("engraving", "End measure: %1; End beat: %2")
            .arg(String::number(barbeat.first), String::number(barbeat.second));
 }
 

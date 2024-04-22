@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -32,7 +32,7 @@
 #include "log.h"
 
 using namespace mu::inspector;
-using namespace mu::ui;
+using namespace muse::ui;
 using namespace muse::accessibility;
 
 static constexpr int GRIP_RADIUS = 6;
@@ -66,7 +66,7 @@ static QPointF constrainToGrid(const QRectF& frameRectWithoutBorders, const QPoi
 }
 
 BendGridCanvas::BendGridCanvas(QQuickItem* parent)
-    : uicomponents::QuickPaintedView(parent)
+    : muse::uicomponents::QuickPaintedView(parent)
 {
     setAcceptedMouseButtons(Qt::AllButtons);
     setAcceptHoverEvents(true);
@@ -90,7 +90,7 @@ BendGridCanvas::BendGridCanvas(QQuickItem* parent)
 
 BendGridCanvas::~BendGridCanvas()
 {
-    DeleteAll(m_pointsAccessibleItems);
+    muse::DeleteAll(m_pointsAccessibleItems);
 }
 
 QVariant BendGridCanvas::pointList() const
@@ -335,7 +335,7 @@ void BendGridCanvas::setPointList(QVariant points)
 
     m_pointsAccessibleItems.clear();
     for (const CurvePoint& point : m_points) {
-        ui::AccessibleItem* item = new ui::AccessibleItem(this);
+        muse::ui::AccessibleItem* item = new muse::ui::AccessibleItem(this);
         item->setName(pointAccessibleName(point));
         item->setAccessibleParent(m_accessibleParent);
         item->setRole(MUAccessible::Role::Information);
@@ -822,7 +822,7 @@ QString BendGridCanvas::pointAccessibleName(const CurvePoint& point)
     QString string = mu::engraving::bendAmountToString(fulls, quarts).toQString();
 
     return (!pointName.isEmpty() ? pointName + "; " : "")
-           + mu::qtrc("inspector", "Time: %2, value: %3").arg(QString::number(point.time), string);
+           + muse::qtrc("inspector", "Time: %2, value: %3").arg(QString::number(point.time), string);
 }
 
 void BendGridCanvas::updatePointAccessibleName(int index)
@@ -831,10 +831,10 @@ void BendGridCanvas::updatePointAccessibleName(int index)
         return;
     }
 
-    ui::AccessibleItem* accItem = m_pointsAccessibleItems[index];
+    muse::ui::AccessibleItem* accItem = m_pointsAccessibleItems[index];
     if (accItem) {
         accItem->setName(pointAccessibleName(m_points.at(index)));
-        accItem->accessiblePropertyChanged().send(IAccessible::Property::Name, Val());
+        accItem->accessiblePropertyChanged().send(IAccessible::Property::Name, muse::Val());
     }
 
     m_needVoicePointName = false;
@@ -937,7 +937,7 @@ bool BendGridCanvas::movePoint(int pointIndex, const CurvePoint& toPoint)
 void BendGridCanvas::setFocusedPointIndex(int index)
 {
     if (m_focusedPointIndex.has_value()) {
-        m_pointsAccessibleItems[m_focusedPointIndex.value()]->setState(ui::AccessibleItem::State::Focused, false);
+        m_pointsAccessibleItems[m_focusedPointIndex.value()]->setState(muse::ui::AccessibleItem::State::Focused, false);
     }
 
     bool isIndexValid = isPointIndexValid(index);
@@ -950,15 +950,15 @@ void BendGridCanvas::setFocusedPointIndex(int index)
     m_needVoicePointName = true;
     updatePointAccessibleName(index);
 
-    m_pointsAccessibleItems[index]->setState(ui::AccessibleItem::State::Focused, true);
+    m_pointsAccessibleItems[index]->setState(muse::ui::AccessibleItem::State::Focused, true);
 }
 
-mu::ui::AccessibleItem* BendGridCanvas::accessibleParent() const
+muse::ui::AccessibleItem* BendGridCanvas::accessibleParent() const
 {
     return m_accessibleParent;
 }
 
-void BendGridCanvas::setAccessibleParent(ui::AccessibleItem* parent)
+void BendGridCanvas::setAccessibleParent(muse::ui::AccessibleItem* parent)
 {
     if (m_accessibleParent == parent) {
         return;
@@ -966,7 +966,7 @@ void BendGridCanvas::setAccessibleParent(ui::AccessibleItem* parent)
 
     m_accessibleParent = parent;
 
-    for (ui::AccessibleItem* item : m_pointsAccessibleItems) {
+    for (muse::ui::AccessibleItem* item : m_pointsAccessibleItems) {
         item->setAccessibleParent(m_accessibleParent);
     }
 

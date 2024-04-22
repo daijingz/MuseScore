@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -35,16 +35,16 @@
 
 #include "log.h"
 
-static mu::testing::SuiteEnvironment engraving_se(
+static muse::testing::SuiteEnvironment engraving_se(
 {
-    new mu::draw::DrawModule(),
+    new muse::draw::DrawModule(),
     new mu::engraving::EngravingModule()
 },
     nullptr,
     []() {
     LOGI() << "engraving tests suite post init";
 
-    mu::engraving::ScoreRW::setRootPath(mu::String::fromUtf8(engraving_tests_DATA_ROOT));
+    mu::engraving::ScoreRW::setRootPath(muse::String::fromUtf8(engraving_tests_DATA_ROOT));
 
     mu::engraving::MScore::testMode = true;
     mu::engraving::MScore::noGui = true;
@@ -54,7 +54,7 @@ static mu::testing::SuiteEnvironment engraving_se(
     std::shared_ptr<::testing::NiceMock<mu::engraving::EngravingConfigurationMock> > configurator
         = std::make_shared<::testing::NiceMock<mu::engraving::EngravingConfigurationMock> >();
     ON_CALL(*configurator, isAccessibleEnabled()).WillByDefault(::testing::Return(false));
-    ON_CALL(*configurator, defaultColor()).WillByDefault(::testing::Return(mu::draw::Color::BLACK));
+    ON_CALL(*configurator, defaultColor()).WillByDefault(::testing::Return(muse::draw::Color::BLACK));
     mu::engraving::EngravingItem::setengravingConfiguration(configurator);
 }
     );

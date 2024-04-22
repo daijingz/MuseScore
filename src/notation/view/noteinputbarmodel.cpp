@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -31,9 +31,10 @@
 
 using namespace mu;
 using namespace mu::notation;
-using namespace mu::actions;
-using namespace mu::ui;
-using namespace mu::uicomponents;
+using namespace muse;
+using namespace muse::actions;
+using namespace muse::ui;
+using namespace muse::uicomponents;
 
 static const QString TOOLBAR_NAME("noteInput");
 
@@ -551,7 +552,8 @@ UiAction NoteInputBarModel::currentNoteInputModeAction() const
     return action;
 }
 
-MenuItem* NoteInputBarModel::makeActionItem(const UiAction& action, const QString& section, const uicomponents::MenuItemList& subitems)
+MenuItem* NoteInputBarModel::makeActionItem(const UiAction& action, const QString& section,
+                                            const muse::uicomponents::MenuItemList& subitems)
 {
     MenuItem* item = new MenuItem(action, this);
     item->setSection(section);
@@ -584,7 +586,7 @@ MenuItemList NoteInputBarModel::makeSubitems(const ActionCode& actionCode)
 MenuItemList NoteInputBarModel::makeNoteInputMethodItems()
 {
     MenuItemList items;
-    actions::ActionCode currentInputMethod = currentNoteInputModeAction().code;
+    ActionCode currentInputMethod = currentNoteInputModeAction().code;
 
     for (const auto& pair : noteInputModeActions) {
         ActionCode actionCode = pair.first;

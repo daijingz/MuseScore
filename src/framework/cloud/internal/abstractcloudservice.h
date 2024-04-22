@@ -19,8 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef MU_CLOUD_ABSTRACTCLOUDSERVICE_H
-#define MU_CLOUD_ABSTRACTCLOUDSERVICE_H
+#ifndef MUSE_CLOUD_ABSTRACTCLOUDSERVICE_H
+#define MUSE_CLOUD_ABSTRACTCLOUDSERVICE_H
 
 #include <QObject>
 #include <QBuffer>
@@ -39,7 +39,7 @@ class QOAuth2AuthorizationCodeFlow;
 
 #include "iauthorizationservice.h"
 
-namespace mu::cloud {
+namespace muse::cloud {
 extern const QString ACCESS_TOKEN_KEY;
 extern const QString REFRESH_TOKEN_KEY;
 
@@ -118,7 +118,7 @@ protected:
     Ret executeRequest(const RequestCallback& requestCallback);
 
     Ret uploadingDownloadingRetFromRawRet(const Ret& rawRet, bool isAlreadyUploaded = false) const;
-    int statusCode(const mu::Ret& ret) const;
+    int statusCode(const Ret& ret) const;
     void printServerReply(const QBuffer& reply) const;
 
     QString accessToken() const;
@@ -156,4 +156,4 @@ private:
 };
 }
 
-#endif // MU_CLOUD_ABSTRACTCLOUDSERVICE_H
+#endif // MUSE_CLOUD_ABSTRACTCLOUDSERVICE_H

@@ -20,8 +20,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef MU_AUDIO_AUDIOTYPES_H
-#define MU_AUDIO_AUDIOTYPES_H
+#ifndef MUSE_AUDIO_AUDIOTYPES_H
+#define MUSE_AUDIO_AUDIOTYPES_H
 
 #include <variant>
 #include <set>
@@ -35,7 +35,7 @@
 
 #include "mpe/events.h"
 
-namespace mu::audio {
+namespace muse::audio {
 using msecs_t = int64_t;
 using secs_t = int64_t;
 using samples_t = uint64_t;
@@ -421,4 +421,4 @@ enum class RenderMode {
 };
 }
 
-#endif // MU_AUDIO_AUDIOTYPES_H
+#endif // MUSE_AUDIO_AUDIOTYPES_H

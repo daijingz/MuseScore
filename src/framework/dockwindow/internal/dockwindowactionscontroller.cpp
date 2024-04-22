@@ -24,8 +24,8 @@
 
 #include "../idockwindow.h"
 
-using namespace mu::dock;
-using namespace mu::actions;
+using namespace muse::dock;
+using namespace muse::actions;
 
 static QString dockNameFromArgs(const ActionData& args)
 {

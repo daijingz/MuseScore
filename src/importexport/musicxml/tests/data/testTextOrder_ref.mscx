@@ -152,13 +152,13 @@
           <StaffText>
             <text>3rd time senza Invisalign</text>
             </StaffText>
-          <StaffText>
+          <Tempo>
+            <tempo>2</tempo>
             <text><font size="12"/><b>Straight</b></text>
-            </StaffText>
-          <StaffText>
-            <placement>below</placement>
+            </Tempo>
+          <Expression>
             <text><i>Cantabile</i></text>
-            </StaffText>
+            </Expression>
           <Beam>
             <StemDirection>down</StemDirection>
             <l1>44</l1>

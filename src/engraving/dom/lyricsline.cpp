@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -27,6 +27,7 @@
 #include "chord.h"
 #include "chordrest.h"
 #include "measure.h"
+#include "note.h"
 #include "score.h"
 #include "segment.h"
 #include "stafftype.h"
@@ -140,7 +141,13 @@ PointF LyricsLine::linePos(Grip grip, System** system) const
     *system = endSeg->measure()->system();
     double x = endSeg->x() + endSeg->measure()->x();
     if (endCr) {
-        x += endCr->isChord() ? toChord(endCr)->rightEdge() : endCr->width();
+        if (endCr->isChord()) {
+            Chord* endChord = toChord(endCr);
+            Note* endNote = endChord->up() ? endChord->downNote() : endChord->upNote();
+            x += endNote->x() + endNote->headWidth();
+        } else {
+            x += endCr->width();
+        }
     }
 
     return PointF(x, 0.0);

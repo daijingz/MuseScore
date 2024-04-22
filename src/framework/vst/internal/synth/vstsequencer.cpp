@@ -24,8 +24,8 @@
 
 #include "global/interpolation.h"
 
-using namespace mu;
-using namespace mu::vst;
+using namespace muse;
+using namespace muse::vst;
 
 static constexpr ControllIdx SUSTAIN_IDX = static_cast<ControllIdx>(Steinberg::Vst::kCtrlSustainOnOff);
 static constexpr ControllIdx PITCH_BEND_IDX = static_cast<ControllIdx>(Steinberg::Vst::kPitchBend);
@@ -89,7 +89,7 @@ void VstSequencer::updateMainStreamEvents(const mpe::PlaybackEventsMap& events, 
     updateDynamicChangesIterator();
 }
 
-audio::gain_t VstSequencer::currentGain() const
+muse::audio::gain_t VstSequencer::currentGain() const
 {
     mpe::dynamic_level_t currentDynamicLevel = dynamicLevel(m_playbackPosition);
     return expressionLevel(currentDynamicLevel);
@@ -198,7 +198,7 @@ void VstSequencer::appendPitchBend(EventSequenceMap& destination, const mpe::Not
     }
 
     auto makePoint = [](mpe::timestamp_t time, float value) {
-        return mu::Interpolation::Point { static_cast<double>(time), value };
+        return Interpolation::Point { static_cast<double>(time), value };
     };
 
     for (; nextIt != endIt; currIt = nextIt, nextIt = std::next(currIt)) {
@@ -208,18 +208,18 @@ void VstSequencer::appendPitchBend(EventSequenceMap& destination, const mpe::Not
         mpe::timestamp_t currTime = timestampFrom + duration * mpe::percentageToFactor(currIt->first);
         mpe::timestamp_t nextTime = timestampFrom + duration * mpe::percentageToFactor(nextIt->first);
 
-        mu::Interpolation::Point p0 = makePoint(currTime, currBendValue);
-        mu::Interpolation::Point p1 = makePoint(nextTime, currBendValue);
-        mu::Interpolation::Point p2 = makePoint(nextTime, nextBendValue);
+        Interpolation::Point p0 = makePoint(currTime, currBendValue);
+        Interpolation::Point p1 = makePoint(nextTime, currBendValue);
+        Interpolation::Point p2 = makePoint(nextTime, nextBendValue);
 
         //! NOTE: Increasing this number results in fewer points being interpolated
         constexpr mpe::pitch_level_t POINT_WEIGHT = mpe::PITCH_LEVEL_STEP / 5;
         size_t pointCount = std::abs(nextIt->second - currIt->second) / POINT_WEIGHT;
         pointCount = std::max(pointCount, size_t(1));
 
-        std::vector<mu::Interpolation::Point> points = mu::Interpolation::quadraticBezierCurve(p0, p1, p2, pointCount);
+        std::vector<Interpolation::Point> points = Interpolation::quadraticBezierCurve(p0, p1, p2, pointCount);
 
-        for (const mu::Interpolation::Point& point : points) {
+        for (const Interpolation::Point& point : points) {
             mpe::timestamp_t time = static_cast<mpe::timestamp_t>(std::round(point.x));
             float bendValue = static_cast<float>(point.y);
             event.defaultNormalizedValue = bendValue;

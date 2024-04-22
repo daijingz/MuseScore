@@ -19,8 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef MU_DOCK_DOCKBASE_H
-#define MU_DOCK_DOCKBASE_H
+#ifndef MUSE_DOCK_DOCKBASE_H
+#define MUSE_DOCK_DOCKBASE_H
 
 #include <QQuickItem>
 
@@ -34,7 +34,7 @@ namespace KDDockWidgets {
 class DockWidgetQuick;
 }
 
-namespace mu::dock {
+namespace muse::dock {
 struct DropDestination;
 class DockBase : public QQuickItem
 {
@@ -61,7 +61,7 @@ class DockBase : public QQuickItem
 
     Q_PROPERTY(bool inited READ inited NOTIFY initedChanged)
 
-    Q_PROPERTY(mu::ui::NavigationPanel * contentNavigationPanel READ contentNavigationPanel
+    Q_PROPERTY(muse::ui::NavigationPanel * contentNavigationPanel READ contentNavigationPanel
                WRITE setContentNavigationPanel NOTIFY contentNavigationPanelChanged)
 
 public:
@@ -135,7 +135,7 @@ public slots:
 
     void setFloating(bool floating);
 
-    void setContentNavigationPanel(mu::ui::NavigationPanel* panel);
+    void setContentNavigationPanel(ui::NavigationPanel* panel);
 
 signals:
     void titleChanged();
@@ -202,7 +202,7 @@ private:
 
     bool m_inited = false;
     KDDockWidgets::DockWidgetQuick* m_dockWidget = nullptr;
-    mu::ui::NavigationPanel* m_contentNavigationPanel = nullptr;
+    ui::NavigationPanel* m_contentNavigationPanel = nullptr;
 };
 
 struct DropDestination
@@ -218,4 +218,4 @@ struct DropDestination
 };
 }
 
-#endif // MU_DOCK_DOCKBASE_H
+#endif // MUSE_DOCK_DOCKBASE_H

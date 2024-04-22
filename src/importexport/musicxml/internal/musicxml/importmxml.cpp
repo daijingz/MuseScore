@@ -1,11 +1,11 @@
 ﻿/*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -39,6 +39,8 @@
 using namespace mu;
 #endif
 
+using namespace muse;
+
 namespace mu::engraving {
 //---------------------------------------------------------
 //   musicXMLImportErrorDialog
@@ -54,7 +56,7 @@ static IInteractive::Button musicXMLImportErrorDialog(const String& text, const 
 
     std::string msg = text.toStdString();
     msg += '\n';
-    msg += trc("iex_musicxml", "Do you want to try to load this file anyway?");
+    msg += muse::trc("iex_musicxml", "Do you want to try to load this file anyway?");
     msg += '\n';
     msg += '\n';
     msg += detailedText.toStdString();
@@ -132,8 +134,8 @@ Err importMusicXMLfromBuffer(Score* score, const String& /*name*/, const ByteArr
     if (!(pass1_errors.isEmpty() && pass2_errors.isEmpty())) {
 #ifndef MUSICXML_NO_INTERACTIVE
         if (!MScore::noGui) {
-            const String text = mtrc("iex_musicxml", "%n error(s) found, import may be incomplete.",
-                                     nullptr, int(pass1_errors.size() + pass2_errors.size()));
+            const String text = muse::mtrc("iex_musicxml", "%n error(s) found, import may be incomplete.",
+                                           nullptr, int(pass1_errors.size() + pass2_errors.size()));
             if (musicXMLImportErrorDialog(text, pass1.errors() + pass2.errors()) != IInteractive::Button::Yes) {
                 res = Err::UserAbort;
             }

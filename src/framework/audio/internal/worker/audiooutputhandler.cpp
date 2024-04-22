@@ -37,11 +37,12 @@
 
 #include "log.h"
 
-using namespace mu::audio;
-using namespace mu::async;
+using namespace muse;
+using namespace muse::audio;
+using namespace muse::async;
 
 #ifdef MUSE_MODULE_AUDIO_EXPORT
-using namespace mu::audio::soundtrack;
+using namespace muse::audio::soundtrack;
 #endif
 
 AudioOutputHandler::AudioOutputHandler(IGetTrackSequence* getSequence)
@@ -205,7 +206,7 @@ Promise<bool> AudioOutputHandler::saveSoundTrack(const TrackSequenceId sequenceI
         SoundTrackWriterPtr writer = std::make_shared<SoundTrackWriter>(destination, format, totalDuration, mixer());
         m_saveSoundTracksWritersMap[sequenceId] = writer;
 
-        mu::Progress progress = saveSoundTrackProgress(sequenceId);
+        Progress progress = saveSoundTrackProgress(sequenceId);
         writer->progress().progressChanged.onReceive(this, [&progress](int64_t current, int64_t total, std::string title) {
             progress.progressChanged.send(current, total, title);
         });
@@ -235,10 +236,10 @@ void AudioOutputHandler::abortSavingAllSoundTracks()
 #endif
 }
 
-mu::Progress AudioOutputHandler::saveSoundTrackProgress(const TrackSequenceId sequenceId)
+Progress AudioOutputHandler::saveSoundTrackProgress(const TrackSequenceId sequenceId)
 {
     if (!contains(m_saveSoundTracksProgressMap, sequenceId)) {
-        m_saveSoundTracksProgressMap.emplace(sequenceId, mu::Progress());
+        m_saveSoundTracksProgressMap.emplace(sequenceId, Progress());
     }
 
     return m_saveSoundTracksProgressMap[sequenceId];

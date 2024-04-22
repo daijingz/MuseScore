@@ -20,8 +20,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef MU_DOCK_DOCKPANELVIEW_H
-#define MU_DOCK_DOCKPANELVIEW_H
+#ifndef MUSE_DOCK_DOCKPANELVIEW_H
+#define MUSE_DOCK_DOCKPANELVIEW_H
 
 #include "internal/dockbase.h"
 
@@ -29,11 +29,11 @@
 
 #include "uicomponents/view/abstractmenumodel.h"
 
-namespace mu::uicomponents {
+namespace muse::uicomponents {
 class AbstractMenuModel;
 }
 
-namespace mu::dock {
+namespace muse::dock {
 class DockPanelView : public DockBase
 {
     Q_OBJECT
@@ -41,7 +41,7 @@ class DockPanelView : public DockBase
     Q_PROPERTY(QString groupName READ groupName WRITE setGroupName NOTIFY groupNameChanged)
     Q_PROPERTY(QObject * navigationSection READ navigationSection WRITE setNavigationSection NOTIFY navigationSectionChanged)
     Q_PROPERTY(
-        mu::uicomponents::AbstractMenuModel
+        muse::uicomponents::AbstractMenuModel
         * contextMenuModel READ contextMenuModel WRITE setContextMenuModel NOTIFY contextMenuModelChanged)
 
 public:
@@ -77,4 +77,4 @@ private:
 };
 }
 
-#endif // MU_DOCK_DOCKPANELVIEW_H
+#endif // MUSE_DOCK_DOCKPANELVIEW_H

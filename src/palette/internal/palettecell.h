@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -66,7 +66,7 @@ private:
 class PaletteCell : public QObject
 {
     Q_OBJECT
-    INJECT_STATIC(mu::ui::IUiActionsRegister, actionsRegister)
+    INJECT_STATIC(muse::ui::IUiActionsRegister, actionsRegister)
 
 public:
     explicit PaletteCell(QObject* parent = nullptr);

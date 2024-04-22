@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -117,7 +117,7 @@ public:
 
     EngravingItem* drop(EditData&) override;
 
-    void setColor(const mu::draw::Color& c) override;
+    void setColor(const Color& c) override;
     void setStemDirection(DirectionV d);
     DirectionV stemDirection() const { return m_stemDirection; }
 
@@ -195,8 +195,8 @@ public:
 
     int upLine() const override;
     int downLine() const override;
-    mu::PointF stemPos() const override;            ///< page coordinates
-    mu::PointF stemPosBeam() const override;        ///< page coordinates
+    PointF stemPos() const override;            ///< page coordinates
+    PointF stemPosBeam() const override;        ///< page coordinates
     double stemPosX() const override;
     double rightEdge() const override;
 
@@ -211,7 +211,7 @@ public:
 
     Note* selectedNote() const;
 
-    mu::PointF pagePos() const override;        ///< position in page coordinates
+    PointF pagePos() const override;        ///< position in page coordinates
     void cmdUpdateNotes(AccidentalState*);
 
     NoteType noteType() const { return m_noteType; }

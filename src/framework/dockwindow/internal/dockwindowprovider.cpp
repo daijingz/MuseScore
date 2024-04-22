@@ -24,8 +24,8 @@
 
 #include "log.h"
 
-using namespace mu::dock;
-using namespace mu::async;
+using namespace muse::dock;
+using namespace muse::async;
 
 void DockWindowProvider::init(IDockWindow* window)
 {

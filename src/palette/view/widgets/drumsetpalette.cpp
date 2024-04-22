@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -65,7 +65,7 @@ void DrumsetPalette::setNotation(INotationPtr notation)
 
 void DrumsetPalette::retranslate()
 {
-    m_drumPalette->setName(mu::qtrc("palette", "Drumset"));
+    m_drumPalette->setName(muse::qtrc("palette", "Drumset"));
 }
 
 void DrumsetPalette::updateDrumset()
@@ -278,7 +278,7 @@ bool DrumsetPalette::handleEvent(QEvent* event)
     return QWidget::event(event);
 }
 
-mu::async::Channel<QString> DrumsetPalette::pitchNameChanged() const
+muse::async::Channel<QString> DrumsetPalette::pitchNameChanged() const
 {
     return m_pitchNameChanged;
 }

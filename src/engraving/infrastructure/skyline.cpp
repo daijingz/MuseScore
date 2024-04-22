@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2023 MuseScore BVBA and others
+ * Copyright (C) 2023 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -34,7 +34,7 @@
 #include "shape.h"
 
 using namespace mu;
-using namespace mu::draw;
+using namespace muse::draw;
 
 namespace mu::engraving {
 static const double MAXIMUM_Y = 1000000.0;
@@ -343,11 +343,11 @@ void SkylineLine::paint(Painter& painter) const
     for (const SkylineSegment& s : *this) {
         x2 = x1 + s.w;
         if (valid(s)) {
-            if (pvalid && !RealIsEqual(y, s.y)) {
+            if (pvalid && !muse::RealIsEqual(y, s.y)) {
                 painter.drawLine(LineF(x1, y, x1, s.y));
             }
             y = s.y;
-            if (!RealIsEqual(x1, x2)) {
+            if (!muse::RealIsEqual(x1, x2)) {
                 painter.drawLine(LineF(x1, y, x2, y));
             }
             pvalid = true;

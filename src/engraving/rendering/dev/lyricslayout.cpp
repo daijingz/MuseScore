@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2023 MuseScore BVBA and others
+ * Copyright (C) 2023 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -303,12 +303,6 @@ void LyricsLayout::layout(LyricsLineSegment* item, LayoutContext& ctx)
             item->setNumOfDashes(1);
         }
         ldata->moveY(-item->lyricsLine()->lineWidth() * .5);     // let the line 'sit on' the base line
-        // if not final segment, shorten it (why? -AS)
-        /*
-        if (isBeginType() || isMiddleType()) {
-            rxpos2() -= ctx.conf().styleP(Sid::minNoteDistance) * mag();
-        }
-        */
     } else {                              // dash(es)
         // set conventional dash Y pos
         ldata->moveY(-lyr->fontMetrics().xHeight() * ctx.conf().styleD(Sid::lyricsDashYposRatio));

@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -59,6 +59,7 @@
 
 using namespace mu::iex::mei;
 using namespace mu;
+using namespace muse;
 
 StringList Convert::logs;
 
@@ -2698,7 +2699,7 @@ std::pair<engraving::DirectionV, bool> Convert::stemFromMEI(const libmei::AttSte
     default:
         break;
     }
-    if (meiStemsAtt.GetStemLen() == 0.0) {
+    if (RealIsNull(meiStemsAtt.GetStemLen())) {
         noStem = true;
     }
 
@@ -2809,11 +2810,11 @@ libmei::Syl Convert::sylToMEI(const engraving::Lyrics* lyrics, ElisionType elisi
             meiSyl.SetWordpos(libmei::sylLog_WORDPOS_NONE);
         }
     } else if (elision == ElisionMiddle) {
-        // Set the elision conntecto and remove any word postion
+        // Set the elision connector and remove any word postion
         meiSyl.SetCon(libmei::sylLog_CON_b);
         meiSyl.SetWordpos(libmei::sylLog_WORDPOS_NONE);
     } else if (elision == ElisionLast) {
-        // Make middle an initial and remove terminal work position
+        // Make middle an initial and remove terminal word position
         if (meiSyl.GetWordpos() == libmei::sylLog_WORDPOS_m) {
             meiSyl.SetWordpos(libmei::sylLog_WORDPOS_i);
         } else if (meiSyl.GetWordpos() == libmei::sylLog_WORDPOS_t) {

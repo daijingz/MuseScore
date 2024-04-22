@@ -22,7 +22,8 @@
 
 #include "authorizationservicestub.h"
 
-using namespace mu::cloud;
+using namespace muse;
+using namespace muse::cloud;
 
 void AuthorizationServiceStub::signUp()
 {
@@ -36,27 +37,27 @@ void AuthorizationServiceStub::signOut()
 {
 }
 
-mu::RetVal<mu::Val> AuthorizationServiceStub::ensureAuthorization(bool, const std::string&)
+RetVal<Val> AuthorizationServiceStub::ensureAuthorization(bool, const std::string&)
 {
-    return make_ret(Ret::Code::NotSupported);
+    return muse::make_ret(Ret::Code::NotSupported);
 }
 
-mu::ValCh<bool> AuthorizationServiceStub::userAuthorized() const
+ValCh<bool> AuthorizationServiceStub::userAuthorized() const
 {
-    return mu::ValCh<bool>();
+    return ValCh<bool>();
 }
 
-mu::ValCh<AccountInfo> AuthorizationServiceStub::accountInfo() const
+ValCh<AccountInfo> AuthorizationServiceStub::accountInfo() const
 {
-    return mu::ValCh<AccountInfo>();
+    return ValCh<AccountInfo>();
 }
 
-mu::cloud::CloudInfo mu::cloud::AuthorizationServiceStub::cloudInfo() const
+CloudInfo muse::cloud::AuthorizationServiceStub::cloudInfo() const
 {
     return CloudInfo();
 }
 
-mu::Ret AuthorizationServiceStub::checkCloudIsAvailable() const
+Ret AuthorizationServiceStub::checkCloudIsAvailable() const
 {
-    return make_ret(Ret::Code::NotSupported);
+    return muse::make_ret(Ret::Code::NotSupported);
 }

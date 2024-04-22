@@ -41,7 +41,7 @@
 
 using KDDropLocation = KDDockWidgets::DropIndicatorOverlayInterface::DropLocation;
 
-namespace mu::dock {
+namespace muse::dock {
 static constexpr double MAX_DISTANCE_TO_HOLDER = 50;
 
 static KDDropLocation dropLocationToKDDockLocation(Location location)
@@ -86,7 +86,7 @@ static bool isPointAllowedForDrop(const QPoint& point, const DropDestination& dr
 }
 }
 
-using namespace mu::dock;
+using namespace muse::dock;
 
 DropController::DropController(KDDockWidgets::DropArea* dropArea)
     : KDDockWidgets::DropIndicatorOverlayInterface(dropArea)
@@ -181,7 +181,7 @@ void DropController::updateToolBarOrientation(DockToolBarView* draggedToolBar, c
         return;
     }
 
-    mu::Orientation orientation = mu::Orientation::Horizontal;
+    muse::Orientation orientation = muse::Orientation::Horizontal;
 
     if (!dropDestination.isValid()) {
         draggedToolBar->setOrientation(static_cast<Qt::Orientation>(orientation));
@@ -191,11 +191,11 @@ void DropController::updateToolBarOrientation(DockToolBarView* draggedToolBar, c
     switch (dropDestination.dock->location()) {
     case Location::Left:
     case Location::Right:
-        orientation = mu::Orientation::Vertical;
+        orientation = muse::Orientation::Vertical;
         break;
     case Location::Top:
     case Location::Bottom:
-        orientation = mu::Orientation::Horizontal;
+        orientation = muse::Orientation::Horizontal;
         break;
     case Location::Center:
     case Location::Undefined:

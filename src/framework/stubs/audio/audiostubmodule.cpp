@@ -30,8 +30,9 @@
 #include "fxresolverstub.h"
 #include "soundfontrepositorystub.h"
 
-using namespace mu::modularity;
-using namespace mu::audio;
+using namespace muse;
+using namespace muse::modularity;
+using namespace muse::audio;
 
 static void audio_init_qrc()
 {
@@ -61,8 +62,4 @@ void AudioModule::registerResources()
 
 void AudioModule::registerUiTypes()
 {
-    std::shared_ptr<ui::IUiEngine> ui = ioc()->resolve<ui::IUiEngine>(moduleName());
-    if (ui) {
-        ui->addSourceImportPath(audio_QML_IMPORT);
-    }
 }

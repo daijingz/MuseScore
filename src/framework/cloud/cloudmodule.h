@@ -19,14 +19,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef MU_CLOUD_CLOUDMODULE_H
-#define MU_CLOUD_CLOUDMODULE_H
+#ifndef MUSE_CLOUD_CLOUDMODULE_H
+#define MUSE_CLOUD_CLOUDMODULE_H
 
 #include <memory>
 
 #include "modularity/imodulesetup.h"
 
-namespace mu::cloud {
+namespace muse::cloud {
 class CloudConfiguration;
 class MuseScoreComService;
 class AudioComService;
@@ -42,9 +42,11 @@ public:
 
 private:
     std::shared_ptr<CloudConfiguration> m_cloudConfiguration;
+#ifdef MUSE_MODULE_CLOUD_MUSESCORECOM
     std::shared_ptr<MuseScoreComService> m_museScoreComService;
+#endif
     std::shared_ptr<AudioComService> m_audioComService;
 };
 }
 
-#endif // MU_CLOUD_CLOUDMODULE_H
+#endif // MUSE_CLOUD_CLOUDMODULE_H

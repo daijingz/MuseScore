@@ -24,7 +24,7 @@
 
 #include "languages/ilanguagesservice.h"
 
-namespace mu::languages {
+namespace muse::languages {
 class LanguagesServiceStub : public ILanguagesService
 {
 public:
@@ -36,7 +36,7 @@ public:
     bool hasPlaceholderLanguage() const override;
     const Language& placeholderLanguage() const override;
 
-    mu::Progress update(const QString& languageCode) override;
+    Progress update(const QString& languageCode) override;
 
     bool needRestartToApplyLanguageChange() const override;
     async::Channel<bool> needRestartToApplyLanguageChangeChanged() const override;

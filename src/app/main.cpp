@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -107,7 +107,7 @@
 #include "framework/uicomponents/uicomponentsmodule.h"
 #endif
 
-#ifdef MUE_BUILD_UPDATE_MODULE
+#ifdef MUSE_MODULE_UPDATE
 #include "update/updatemodule.h"
 #else
 #include "framework/stubs/update/updatestubmodule.h"
@@ -224,7 +224,7 @@
 #include <shellapi.h>
 #endif
 
-#ifndef MUE_BUILD_CRASHPAD_CLIENT
+#ifndef MUSE_MODULE_DIAGNOSTICS_CRASHPAD_CLIENT
 static void crashCallback(int signum)
 {
     const char* signame = "UNKNOWN SIGNAME";
@@ -247,7 +247,7 @@ static void crashCallback(int signum)
 
 int main(int argc, char** argv)
 {
-#ifndef MUE_BUILD_CRASHPAD_CLIENT
+#ifndef MUSE_MODULE_DIAGNOSTICS_CRASHPAD_CLIENT
     signal(SIGSEGV, crashCallback);
     signal(SIGILL, crashCallback);
     signal(SIGFPE, crashCallback);
@@ -261,26 +261,26 @@ int main(int argc, char** argv)
 
     //! NOTE `diagnostics` must be first, because it installs the crash handler.
     //! For other modules, the order is (an should be) unimportant.
-    app.addModule(new mu::diagnostics::DiagnosticsModule());
+    app.addModule(new muse::diagnostics::DiagnosticsModule());
 
     // framework
     app.addModule(new muse::accessibility::AccessibilityModule());
-    app.addModule(new mu::actions::ActionsModule());
-    app.addModule(new mu::audio::AudioModule());
-    app.addModule(new mu::draw::DrawModule());
-    app.addModule(new mu::midi::MidiModule());
-    app.addModule(new mu::mpe::MpeModule());
+    app.addModule(new muse::actions::ActionsModule());
+    app.addModule(new muse::audio::AudioModule());
+    app.addModule(new muse::draw::DrawModule());
+    app.addModule(new muse::midi::MidiModule());
+    app.addModule(new muse::mpe::MpeModule());
 #ifdef MUSE_MODULE_MUSESAMPLER
-    app.addModule(new mu::musesampler::MuseSamplerModule());
+    app.addModule(new muse::musesampler::MuseSamplerModule());
 #endif
-    app.addModule(new mu::network::NetworkModule());
-    app.addModule(new mu::shortcuts::ShortcutsModule());
+    app.addModule(new muse::network::NetworkModule());
+    app.addModule(new muse::shortcuts::ShortcutsModule());
 #ifdef MUSE_MODULE_UI
-    app.addModule(new mu::ui::UiModule());
-    app.addModule(new mu::uicomponents::UiComponentsModule());
-    app.addModule(new mu::dock::DockModule());
+    app.addModule(new muse::ui::UiModule());
+    app.addModule(new muse::uicomponents::UiComponentsModule());
+    app.addModule(new muse::dock::DockModule());
 #endif
-    app.addModule(new mu::vst::VSTModule());
+    app.addModule(new muse::vst::VSTModule());
 
     // modules
 #ifdef MUE_BUILD_APPSHELL_MODULE
@@ -288,12 +288,12 @@ int main(int argc, char** argv)
 #endif
 
 #ifdef MUSE_MODULE_AUTOBOT
-    app.addModule(new mu::autobot::AutobotModule());
+    app.addModule(new muse::autobot::AutobotModule());
 #endif
 
     app.addModule(new mu::braille::BrailleModule());
 
-    app.addModule(new mu::cloud::CloudModule());
+    app.addModule(new muse::cloud::CloudModule());
     app.addModule(new mu::commonscene::CommonSceneModule());
     app.addModule(new mu::context::ContextModule());
 
@@ -326,20 +326,20 @@ int main(int argc, char** argv)
 
     app.addModule(new mu::inspector::InspectorModule());
     app.addModule(new mu::instrumentsscene::InstrumentsSceneModule());
-    app.addModule(new mu::languages::LanguagesModule());
-    app.addModule(new mu::learn::LearnModule());
-    app.addModule(new mu::mi::MultiInstancesModule());
+    app.addModule(new muse::languages::LanguagesModule());
+    app.addModule(new muse::learn::LearnModule());
+    app.addModule(new muse::mi::MultiInstancesModule());
     app.addModule(new mu::notation::NotationModule());
     app.addModule(new mu::palette::PaletteModule());
     app.addModule(new mu::playback::PlaybackModule());
 #ifdef MUSE_MODULE_EXTENSIONS
-    app.addModule(new mu::extensions::ExtensionsModule());
+    app.addModule(new muse::extensions::ExtensionsModule());
 #endif
     app.addModule(new mu::print::PrintModule());
     app.addModule(new mu::project::ProjectModule());
-    app.addModule(new mu::update::UpdateModule());
-    app.addModule(new mu::workspace::WorkspaceModule());
-    app.addModule(new mu::workspace::WorkspaceSceneModule());
+    app.addModule(new muse::update::UpdateModule());
+    app.addModule(new muse::workspace::WorkspaceModule());
+    app.addModule(new mu::workspacescene::WorkspaceSceneModule());
 
 #ifdef Q_OS_WASM
     app.addModule(new mu::wasmtest::WasmTestModule());

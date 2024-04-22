@@ -27,8 +27,8 @@
 #include "languagesconfigurationstub.h"
 #include "languagesservicestub.h"
 
-using namespace mu::languages;
-using namespace mu::modularity;
+using namespace muse::languages;
+using namespace muse::modularity;
 
 static void languages_init_qrc()
 {
@@ -53,8 +53,4 @@ void LanguagesModule::registerResources()
 
 void LanguagesModule::registerUiTypes()
 {
-    std::shared_ptr<ui::IUiEngine> ui = ioc()->resolve<ui::IUiEngine>(moduleName());
-    if (ui) {
-        ui->addSourceImportPath(languages_QML_IMPORT);
-    }
 }

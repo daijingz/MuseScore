@@ -24,7 +24,6 @@
 
 #include <functional>
 #include <QQuickView>
-#include <QQuickWidget>
 #include <QQmlEngine>
 #include <QUrl>
 #include <QQmlContext>
@@ -42,7 +41,7 @@
 
 #include "log.h"
 
-using namespace mu::uicomponents;
+using namespace muse::uicomponents;
 
 PopupView::PopupView(QQuickItem* parent)
     : QObject(parent)
@@ -331,7 +330,7 @@ bool PopupView::activateParentOnClose() const
     return m_activateParentOnClose;
 }
 
-mu::ui::INavigationControl* PopupView::navigationParentControl() const
+muse::ui::INavigationControl* PopupView::navigationParentControl() const
 {
     return m_navigationParentControl;
 }
@@ -767,12 +766,6 @@ void PopupView::updateContentPosition()
             setArrowX(viewGeometry.width() / 2);
         } else {
             setArrowX(parentTopLeft.x() + (parent->width() / 2) - m_globalPos.x());
-        }
-    } else {
-        if (opensUpward()) {
-            contentItem()->setY(padding());
-        } else {
-            contentItem()->setY(-padding());
         }
     }
 }

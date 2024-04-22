@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -31,12 +31,13 @@
 #include "defer.h"
 #include "log.h"
 
+using namespace muse;
 using namespace mu::playback;
-using namespace mu::midi;
+using namespace muse::midi;
 using namespace mu::notation;
-using namespace mu::async;
-using namespace mu::audio;
-using namespace mu::actions;
+using namespace muse::async;
+using namespace muse::audio;
+using namespace muse::actions;
 using namespace mu::engraving;
 
 static const ActionCode PLAY_CODE("play");
@@ -71,13 +72,13 @@ static std::string resolveAuxTrackTitle(aux_channel_idx_t index, const AudioOutp
     if (considerFx && params.fxChain.size() == 1) {
         const AudioResourceMeta& meta = params.fxChain.cbegin()->second.resourceMeta;
         if (meta.id == MUSE_REVERB_ID) {
-            return mu::trc("playback", "Reverb");
+            return muse::trc("playback", "Reverb");
         }
 
         return meta.id;
     }
 
-    return mu::mtrc("playback", "Aux %1").arg(index + 1).toStdString();
+    return muse::mtrc("playback", "Aux %1").arg(index + 1).toStdString();
 }
 
 static bool shouldLoadDrumset(const AudioResourceMeta& oldMeta, const AudioResourceMeta& newMeta)
@@ -876,7 +877,7 @@ void PlaybackController::setCurrentPlaybackTime(msecs_t msecs)
 void PlaybackController::addTrack(const InstrumentTrackId& instrumentTrackId, const TrackAddFinished& onFinished)
 {
     if (notationPlayback()->metronomeTrackId() == instrumentTrackId) {
-        doAddTrack(instrumentTrackId, trc("playback", "Metronome"), onFinished);
+        doAddTrack(instrumentTrackId, muse::trc("playback", "Metronome"), onFinished);
         return;
     }
 
@@ -886,12 +887,12 @@ void PlaybackController::addTrack(const InstrumentTrackId& instrumentTrackId, co
     }
 
     if (notationPlayback()->isChordSymbolsTrack(instrumentTrackId)) {
-        const std::string trackName = trc("playback", "Chords") + "." + part->partName().toStdString();
+        const std::string trackName = muse::trc("playback", "Chords") + "." + part->partName().toStdString();
         doAddTrack(instrumentTrackId, trackName, onFinished);
         return;
     }
 
-    const String primaryInstrId = part->instrument()->id();
+    const muse::String primaryInstrId = part->instrument()->id();
     if (instrumentTrackId.instrumentId == primaryInstrId) {
         const std::string trackName = part->partName().toStdString();
         doAddTrack(instrumentTrackId, trackName, onFinished);
@@ -938,7 +939,7 @@ void PlaybackController::doAddTrack(const InstrumentTrackId& instrumentTrackId, 
     }
 
     if (!isMetronome && outParams.auxSends.empty()) {
-        const String& instrumentSoundId = inParams.resourceMeta.attributeVal(PLAYBACK_SETUP_DATA_ATTRIBUTE);
+        const muse::String& instrumentSoundId = inParams.resourceMeta.attributeVal(PLAYBACK_SETUP_DATA_ATTRIBUTE);
         AudioSourceType sourceType = inParams.isValid() ? inParams.type() : AudioSourceType::Fluid;
 
         for (aux_channel_idx_t idx = 0; idx < AUX_CHANNEL_NUM; ++idx) {
@@ -1206,7 +1207,7 @@ void PlaybackController::setupSequenceTracks()
 
     InstrumentTrackIdSet trackIdSet = notationPlayback()->existingTrackIdSet();
     size_t trackCount = trackIdSet.size() + AUX_CHANNEL_NUM;
-    std::string title = trc("playback", "Loading audio samples");
+    std::string title = muse::trc("playback", "Loading audio samples");
 
     auto onAddFinished = [this, trackCount, title]() {
         m_loadingTrackCount--;
@@ -1215,7 +1216,7 @@ void PlaybackController::setupSequenceTracks()
         m_loadingProgress.progressChanged.send(current, trackCount, title);
 
         if (m_loadingTrackCount == 0) {
-            m_loadingProgress.finished.send(make_ok());
+            m_loadingProgress.finished.send(muse::make_ok());
             m_isPlayAllowedChanged.notify();
         }
     };
@@ -1294,7 +1295,7 @@ void PlaybackController::initMuteStates()
     INotationPartsPtr notationParts = m_notation->parts();
 
     for (const InstrumentTrackId& instrumentTrackId : notationPlayback()->existingTrackIdSet()) {
-        if (!mu::contains(m_instrumentTrackIdMap, instrumentTrackId)) {
+        if (!muse::contains(m_instrumentTrackIdMap, instrumentTrackId)) {
             continue;
         }
 
@@ -1333,7 +1334,7 @@ void PlaybackController::updateSoloMuteStates()
     bool isRangePlaybackMode = !m_isExportingAudio && selection()->isRange() && !allowedInstrumentTrackIdSet.empty();
 
     for (const InstrumentTrackId& instrumentTrackId : existingTrackIdSet) {
-        if (!mu::contains(m_instrumentTrackIdMap, instrumentTrackId)) {
+        if (!muse::contains(m_instrumentTrackIdMap, instrumentTrackId)) {
             continue;
         }
 
@@ -1351,7 +1352,7 @@ void PlaybackController::updateSoloMuteStates()
         }
 
         if (isRangePlaybackMode && !shouldForceMute) {
-            shouldForceMute = !mu::contains(allowedInstrumentTrackIdSet, instrumentTrackId);
+            shouldForceMute = !muse::contains(allowedInstrumentTrackIdSet, instrumentTrackId);
         }
 
         // 3. Update params for playback / mixer
@@ -1472,7 +1473,7 @@ void PlaybackController::setTempoMultiplier(double multiplier)
     }
 }
 
-mu::Progress PlaybackController::loadingProgress() const
+muse::Progress PlaybackController::loadingProgress() const
 {
     return m_loadingProgress;
 }
@@ -1579,7 +1580,7 @@ void PlaybackController::setIsExportingAudio(bool exporting)
     updateSoloMuteStates();
 }
 
-bool PlaybackController::canReceiveAction(const actions::ActionCode&) const
+bool PlaybackController::canReceiveAction(const ActionCode&) const
 {
     return m_masterNotation != nullptr && m_masterNotation->hasParts();
 }

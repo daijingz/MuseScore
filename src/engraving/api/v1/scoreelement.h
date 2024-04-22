@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -145,15 +145,15 @@ Wrapper* customWrap(T* t, Args... args)
 //---------------------------------------------------------
 
 template<typename T, class Container>
-class QmlListAccess : public mu::extensions::api::QmlListProperty<T>
+class QmlListAccess : public muse::extensions::api::QmlListProperty<T>
 {
 public:
     /// \cond MS_INTERNAL
     QmlListAccess(QObject* obj, Container& container)
-        : mu::extensions::api::QmlListProperty<T>(obj,
-                                                  const_cast<void*>(static_cast<const void*>(&container)),
-                                                  &count,
-                                                  &at) {}
+        : muse::extensions::api::QmlListProperty<T>(obj,
+                                                    const_cast<void*>(static_cast<const void*>(&container)),
+                                                    &count,
+                                                    &at) {}
 
     static qsizetype count(QQmlListProperty<T>* l)
     {

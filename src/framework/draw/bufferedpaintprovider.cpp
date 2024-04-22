@@ -24,8 +24,8 @@
 #include "utils/drawlogger.h"
 #include "log.h"
 
-using namespace mu;
-using namespace mu::draw;
+using namespace muse;
+using namespace muse::draw;
 
 BufferedPaintProvider::BufferedPaintProvider()
 {

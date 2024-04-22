@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -290,14 +290,14 @@ public:
     double position(const StringList& names, ChordTokenClass ctc) const;
 
     bool read(const String&);
-    bool read(io::IODevice* device);
+    bool read(muse::io::IODevice* device);
     bool write(const String&) const;
-    bool write(io::IODevice* device) const;
+    bool write(muse::io::IODevice* device) const;
     bool loaded() const;
     void unload();
 
     const ChordDescription* description(int id) const;
-    ChordSymbol symbol(const String& s) const { return mu::value(m_symbols, s); }
+    ChordSymbol symbol(const String& s) const { return muse::value(m_symbols, s); }
 
     void setCustomChordList(bool t) { m_customChordList = t; }
     bool customChordList() const { return m_customChordList; }

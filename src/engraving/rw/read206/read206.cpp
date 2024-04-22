@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -107,6 +107,7 @@
 #include "log.h"
 
 using namespace mu;
+using namespace muse;
 using namespace mu::engraving;
 using namespace mu::engraving::rw;
 using namespace mu::engraving::read400;
@@ -137,14 +138,14 @@ void Read206::readTextStyle206(MStyle* style, XmlReader& e, ReadContext& ctx, st
     FrameType frameType = FrameType::NO_FRAME;
     Spatium paddingWidth(0.0);
     Spatium frameWidth(0.0);
-    mu::draw::Color foregroundColor = mu::draw::Color::BLACK;
-    mu::draw::Color backgroundColor = mu::draw::Color::transparent;
+    Color foregroundColor = Color::BLACK;
+    Color backgroundColor = Color::transparent;
 
     PlacementV placement = PlacementV::ABOVE;
     bool placementValid = false;
 
     String name = e.attribute("name");
-    mu::draw::Color frameColor = mu::draw::Color::BLACK;
+    Color frameColor = Color::BLACK;
 
     bool systemFlag = false;
     double lineWidth = -1.0;
@@ -1150,7 +1151,7 @@ bool Read206::readNoteProperties206(Note* note, XmlReader& e, ReadContext& ctx)
 static String ReadStyleName206(String xmlTag)
 {
     size_t beginIdx = xmlTag.indexOf(u"<style>");
-    if (beginIdx == mu::nidx) {
+    if (beginIdx == muse::nidx) {
         return String();
     }
     beginIdx += String(u"<style>").size();
@@ -1194,7 +1195,7 @@ static bool readTextPropertyStyle206(String xmlTag, ReadContext& ctx, TextBase* 
             TextStyleType ss;
             ss = ctx.lookupUserTextStyle(s);
             if (ss == TextStyleType::TEXT_TYPES) {
-                ByteArray ba = s.toAscii();
+                muse::ByteArray ba = s.toAscii();
                 ss = TConv::fromXml(ba.constChar(), TextStyleType::DEFAULT);
             }
             if (ss != TextStyleType::TEXT_TYPES) {
@@ -1292,7 +1293,7 @@ public:
         xmlTag = origReader.readXml();
         xmlTag.prepend(u"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<" + name + u">");
         xmlTag.append(u"</" + name + u">\n");
-        ByteArray data = xmlTag.toUtf8();
+        muse::ByteArray data = xmlTag.toUtf8();
         tagReader.setData(data);  // Add the xml data to the XmlReader
         // the additional lines are needed to output the correct line number
         // of the original file in case of error
@@ -1902,7 +1903,7 @@ static void convertDoubleArticulations(Chord* chord, XmlReader& e, ReadContext& 
             chord->remove(a);
             if (a != newArtic) {
                 if (LinkedObjects* link = a->links()) {
-                    mu::remove(ctx.linkIds(), link->lid());
+                    muse::remove(ctx.linkIds(), link->lid());
                 }
                 delete a;
             }
@@ -2040,7 +2041,7 @@ static void readVolta206(XmlReader& e, ReadContext& ctx, Volta* volta)
         const AsciiStringView tag(e.name());
         if (tag == "endings") {
             String s = e.readText();
-            StringList sl = s.split(u',', mu::SkipEmptyParts);
+            StringList sl = s.split(u',', muse::SkipEmptyParts);
             volta->endings().clear();
             for (const String& l : sl) {
                 int i = l.simplified().toInt();
@@ -2270,7 +2271,7 @@ EngravingItem* Read206::readArticulation(EngravingItem* parent, XmlReader& e, Re
                 int oldType = s.toInt();
                 sym = articulationNames[oldType].id;
             } else {
-                ByteArray ba = s.toAscii();
+                muse::ByteArray ba = s.toAscii();
                 sym = articulationNames2SymId206(ba.constChar());
                 if (sym == SymId::noSym) {
                     struct {
@@ -2376,7 +2377,7 @@ EngravingItem* Read206::readArticulation(EngravingItem* parent, XmlReader& e, Re
         el = f;
     }
     if (el->isFermata()) {
-        if (timeStretch != 0.0) {
+        if (!RealIsNull(timeStretch)) {
             el->setProperty(Pid::TIME_STRETCH, timeStretch);
         }
         if (useDefaultPlacement) {
@@ -2426,7 +2427,7 @@ void Read206::readSlur206(XmlReader& e, ReadContext& ctx, Slur* s)
             e.unknown();
         }
     }
-    if (s->track2() == mu::nidx) {
+    if (s->track2() == muse::nidx) {
         s->setTrack2(s->track());
     }
 }
@@ -2593,6 +2594,7 @@ static void readMeasure206(Measure* m, int staffIdx, XmlReader& e, ReadContext& 
                 mmr->setParent(segment);
                 mmr->setTrack(ctx.track());
                 read400::TRead::read(mmr, e, ctx);
+                mmr->setTicks(m->ticks());
                 segment->add(mmr);
                 lastTick = ctx.tick();
                 ctx.incTick(mmr->actualTicks());
@@ -2648,7 +2650,7 @@ static void readMeasure206(Measure* m, int staffIdx, XmlReader& e, ReadContext& 
                 // if (spanner->track2() == -1)
                 // the absence of a track tag [?] means the
                 // track is the same as the beginning of the slur
-                if (spanner->track2() == mu::nidx) {
+                if (spanner->track2() == muse::nidx) {
                     spanner->setTrack2(spanner->track() ? spanner->track() : ctx.track());
                 }
             } else {
@@ -2732,7 +2734,7 @@ static void readMeasure206(Measure* m, int staffIdx, XmlReader& e, ReadContext& 
                     ctx.staff(staffIdx)->setDefaultClefType(clef->clefType());
                 }
                 if (clef->links() && clef->links()->size() == 1) {
-                    mu::remove(ctx.linkIds(), clef->links()->lid());
+                    muse::remove(ctx.linkIds(), clef->links()->lid());
                     LOGD("remove link %d", clef->links()->lid());
                 }
                 delete clef;
@@ -2847,7 +2849,7 @@ static void readMeasure206(Measure* m, int staffIdx, XmlReader& e, ReadContext& 
                 if (t->links()) {
                     if (t->links()->size() == 1) {
                         LOGD("reading empty text: deleted lid = %d", t->links()->lid());
-                        mu::remove(ctx.linkIds(), t->links()->lid());
+                        muse::remove(ctx.linkIds(), t->links()->lid());
                         delete t;
                     }
                 }
@@ -3245,7 +3247,7 @@ static void readStyle206(MStyle* style, XmlReader& e, ReadContext& ctx, ReadChor
 bool Read206::readScore206(Score* score, XmlReader& e, ReadContext& ctx)
 {
     while (e.readNextStartElement()) {
-        ctx.setTrack(mu::nidx);
+        ctx.setTrack(muse::nidx);
         const AsciiStringView tag(e.name());
         if (tag == "Staff") {
             readStaffContent206(score, e, ctx);
@@ -3396,9 +3398,9 @@ bool Read206::readScore206(Score* score, XmlReader& e, ReadContext& ctx)
             e.unknown();
         }
     }
-    if (e.error() != XmlStreamReader::NoError) {
-        LOGE() << String(u"XML read error at line %1, column %2: %3").arg(e.lineNumber()).arg(e.columnNumber())
-            .arg(String::fromAscii(e.name().ascii()));
+    if (e.error() != muse::XmlStreamReader::NoError) {
+        LOGE() << muse::String(u"XML read error at line %1, column %2: %3").arg(e.lineNumber()).arg(e.columnNumber())
+            .arg(muse::String::fromAscii(e.name().ascii()));
         return false;
     }
 

@@ -19,8 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef MU_CLOUD_IAUDIOCOMSERVICE_H
-#define MU_CLOUD_IAUDIOCOMSERVICE_H
+#ifndef MUSE_CLOUD_IAUDIOCOMSERVICE_H
+#define MUSE_CLOUD_IAUDIOCOMSERVICE_H
 
 #include "modularity/imoduleinterface.h"
 #include "progress.h"
@@ -30,7 +30,7 @@
 class QIODevice;
 class QString;
 
-namespace mu::cloud {
+namespace muse::cloud {
 class IAudioComService : MODULE_EXPORT_INTERFACE
 {
     INTERFACE_ID(IAudioComService)
@@ -40,11 +40,11 @@ public:
 
     virtual IAuthorizationServicePtr authorization() = 0;
 
-    virtual mu::ProgressPtr uploadAudio(QIODevice& audioData, const QString& audioFormat, const QString& title, const QUrl& existingUrl,
-                                        Visibility visibility = Visibility::Private, bool replaceExisting = false) = 0;
+    virtual ProgressPtr uploadAudio(QIODevice& audioData, const QString& audioFormat, const QString& title, const QUrl& existingUrl,
+                                    Visibility visibility = Visibility::Private, bool replaceExisting = false) = 0;
 
     virtual CloudInfo cloudInfo() const = 0;
 };
 }
 
-#endif // MU_CLOUD_IAUDIOCOMSERVICE_H
+#endif // MUSE_CLOUD_IAUDIOCOMSERVICE_H

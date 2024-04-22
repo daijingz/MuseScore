@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -844,7 +844,7 @@ void PowerTab::addToScore(ptSection& sec)
         t = new RehearsalMark(seg);
         t->setFrameType(FrameType::NO_FRAME);
         t->setPlainText(String::fromStdString(sec.partName));
-        t->setOffset(mu::PointF(10.0, 0.0));
+        t->setOffset(muse::PointF(10.0, 0.0));
         t->setTrack(0);
         seg->add(t);
     }

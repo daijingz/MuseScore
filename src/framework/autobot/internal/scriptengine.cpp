@@ -28,9 +28,9 @@
 
 #include "log.h"
 
-using namespace mu;
-using namespace mu::autobot;
-using namespace mu::api;
+using namespace muse;
+using namespace muse::autobot;
+using namespace muse::api;
 
 ScriptEngine::ScriptEngine()
 {

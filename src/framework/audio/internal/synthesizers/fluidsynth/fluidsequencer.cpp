@@ -24,10 +24,10 @@
 
 #include "global/interpolation.h"
 
-using namespace mu;
-using namespace mu::audio;
-using namespace mu::midi;
-using namespace mu::mpe;
+using namespace muse;
+using namespace muse::audio;
+using namespace muse::midi;
+using namespace muse::mpe;
 
 static constexpr mpe::pitch_level_t MIN_SUPPORTED_PITCH_LEVEL = mpe::pitchLevel(PitchClass::C, 0);
 static constexpr note_idx_t MIN_SUPPORTED_NOTE = 12; // MIDI equivalent for C0
@@ -75,7 +75,7 @@ void FluidSequencer::updateMainStreamEvents(const mpe::PlaybackEventsMap& events
     updateDynamicChangesIterator();
 }
 
-async::Channel<channel_t, Program> FluidSequencer::channelAdded() const
+muse::async::Channel<channel_t, Program> FluidSequencer::channelAdded() const
 {
     return m_channels.channelAdded;
 }
@@ -127,8 +127,8 @@ void FluidSequencer::updatePlaybackEvents(EventSequenceMap& destination, const m
 void FluidSequencer::updateDynamicEvents(EventSequenceMap& destination, const mpe::DynamicLevelMap& changes)
 {
     for (const auto& pair : changes) {
-        midi::Event event(midi::Event::Opcode::ControlChange, Event::MessageType::ChannelVoice10);
-        event.setIndex(midi::EXPRESSION_CONTROLLER);
+        muse::midi::Event event(muse::midi::Event::Opcode::ControlChange, Event::MessageType::ChannelVoice10);
+        event.setIndex(muse::midi::EXPRESSION_CONTROLLER);
         event.setData(expressionLevel(pair.second));
 
         destination[pair.first].emplace(std::move(event));
@@ -208,12 +208,13 @@ void FluidSequencer::appendPitchBend(EventSequenceMap& destination, const mpe::N
     }
 
     auto makePoint = [](mpe::timestamp_t time, int value) {
-        return mu::Interpolation::Point { static_cast<double>(time), static_cast<double>(value) };
+        return Interpolation::Point { static_cast<double>(time), static_cast<double>(value) };
     };
 
     //! NOTE: Increasing this number results in fewer points being interpolated
     const mpe::pitch_level_t POINT_WEIGHT = currentType == mpe::ArticulationType::Multibend
-                                            ? mpe::PITCH_LEVEL_STEP / 5 : mpe::PITCH_LEVEL_STEP / 2;
+                                            ? mpe::PITCH_LEVEL_STEP / 5
+                                            : mpe::PITCH_LEVEL_STEP / 2;
 
     for (; nextIt != endIt; currIt = nextIt, nextIt = std::next(currIt)) {
         int currBendValue = pitchBendLevel(currIt->second);
@@ -222,16 +223,16 @@ void FluidSequencer::appendPitchBend(EventSequenceMap& destination, const mpe::N
         timestamp_t currTime = timestampFrom + duration * percentageToFactor(currIt->first);
         timestamp_t nextTime = timestampFrom + duration * percentageToFactor(nextIt->first);
 
-        mu::Interpolation::Point p0 = makePoint(currTime, currBendValue);
-        mu::Interpolation::Point p1 = makePoint(nextTime, currBendValue);
-        mu::Interpolation::Point p2 = makePoint(nextTime, nextBendValue);
+        Interpolation::Point p0 = makePoint(currTime, currBendValue);
+        Interpolation::Point p1 = makePoint(nextTime, currBendValue);
+        Interpolation::Point p2 = makePoint(nextTime, nextBendValue);
 
         size_t pointCount = std::abs(nextIt->second - currIt->second) / POINT_WEIGHT;
         pointCount = std::max(pointCount, size_t(1));
 
-        std::vector<mu::Interpolation::Point> points = mu::Interpolation::quadraticBezierCurve(p0, p1, p2, pointCount);
+        std::vector<Interpolation::Point> points = Interpolation::quadraticBezierCurve(p0, p1, p2, pointCount);
 
-        for (const mu::Interpolation::Point& point : points) {
+        for (const Interpolation::Point& point : points) {
             timestamp_t time = static_cast<timestamp_t>(std::round(point.x));
             int bendValue = static_cast<int>(std::round(point.y));
 
@@ -256,7 +257,9 @@ note_idx_t FluidSequencer::noteIndex(const mpe::pitch_level_t pitchLevel) const
         return MAX_SUPPORTED_NOTE;
     }
 
-    float stepCount = MIN_SUPPORTED_NOTE + ((pitchLevel - MIN_SUPPORTED_PITCH_LEVEL) / static_cast<float>(mpe::PITCH_LEVEL_STEP));
+    float stepCount = MIN_SUPPORTED_NOTE
+                      + ((pitchLevel - MIN_SUPPORTED_PITCH_LEVEL)
+                         / static_cast<float>(mpe::PITCH_LEVEL_STEP));
 
     return stepCount;
 }
@@ -265,7 +268,8 @@ tuning_t FluidSequencer::noteTuning(const mpe::NoteEvent& noteEvent, const int n
 {
     int semitonesCount = noteIdx - MIN_SUPPORTED_NOTE;
 
-    mpe::pitch_level_t tuningPitchLevel = noteEvent.pitchCtx().nominalPitchLevel - (semitonesCount * mpe::PITCH_LEVEL_STEP);
+    mpe::pitch_level_t tuningPitchLevel = noteEvent.pitchCtx().nominalPitchLevel
+                                          - (semitonesCount * mpe::PITCH_LEVEL_STEP);
 
     return tuningPitchLevel / static_cast<float>(mpe::PITCH_LEVEL_STEP);
 }
@@ -295,7 +299,8 @@ int FluidSequencer::expressionLevel(const mpe::dynamic_level_t dynamicLevel) con
         return MAX_SUPPORTED_VOLUME;
     }
 
-    float stepCount = ((dynamicLevel - MIN_SUPPORTED_DYNAMICS_LEVEL) / static_cast<float>(mpe::DYNAMIC_LEVEL_STEP));
+    float stepCount = ((dynamicLevel - MIN_SUPPORTED_DYNAMICS_LEVEL)
+                       / static_cast<float>(mpe::DYNAMIC_LEVEL_STEP));
 
     if (dynamicLevel == mpe::dynamicLevelFromType(DynamicType::Natural)) {
         stepCount -= 0.5;

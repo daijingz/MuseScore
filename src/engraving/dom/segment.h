@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -134,7 +134,7 @@ public:
     Segment* prev1(SegmentType) const;
     Segment* prev1MM(SegmentType) const;
 
-    Segment* nextCR(track_idx_t track = mu::nidx, bool sameStaff = false) const;
+    Segment* nextCR(track_idx_t track = muse::nidx, bool sameStaff = false) const;
 
     ChordRest* nextChordRest(track_idx_t track, bool backwards = false) const;
 
@@ -155,7 +155,7 @@ public:
     System* system() const { return toSystem(explicitParent()->explicitParent()); }
     double x() const override { return ldata()->pos().x(); }
 
-    mu::RectF contentRect() const;
+    RectF contentRect() const;
 
     void insertStaff(staff_idx_t staff);
     void removeStaff(staff_idx_t staff);

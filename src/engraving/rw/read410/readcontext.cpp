@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -404,7 +404,7 @@ void ReadContext::removeSpanner(const Spanner* s)
 {
     for (auto i : _spanner) {
         if (i.second == s) {
-            mu::remove(_spanner, i);
+            muse::remove(_spanner, i);
             return;
         }
     }
@@ -557,7 +557,7 @@ void ReadContext::clearOrphanedConnectors()
 
     for (auto& it : m_staffLinkedElements) {
         std::vector<std::pair<LinkedObjects*, Location> >& vector = it.second;
-        mu::remove_if(vector, [&deletedLinks](std::pair<LinkedObjects*, Location>& pair){
+        muse::remove_if(vector, [&deletedLinks](std::pair<LinkedObjects*, Location>& pair){
             return deletedLinks.count(pair.first);
         });
     }

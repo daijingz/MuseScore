@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -35,7 +35,7 @@
 #include "dom/types.h"
 
 using namespace mu;
-using namespace mu::draw;
+using namespace muse::draw;
 using namespace mu::engraving;
 
 //! Keep in sync with Sid in styledef.h
@@ -80,7 +80,7 @@ const std::array<StyleDef::StyleValue, size_t(Sid::STYLES)> StyleDef::styleValue
     { Sid::lyricsMinDistance,       "lyricsMinDistance",       Spatium(0.25) },
     { Sid::lyricsLineHeight,        "lyricsLineHeight",        1.0 },
     { Sid::lyricsDashMinLength,     "lyricsDashMinLength",     Spatium(0.4) },
-    { Sid::lyricsDashMaxLength,     "lyricsDashMaxLength",     Spatium(0.8) },
+    { Sid::lyricsDashMaxLength,     "lyricsDashMaxLength",     Spatium(0.6) },
     { Sid::lyricsDashMaxDistance,   "lyricsDashMaxDistance",   Spatium(16.0) },
     { Sid::lyricsDashForce,         "lyricsDashForce",         true },
     { Sid::lyricsAlignVerseNumber,  "lyricsAlignVerseNumber",  true },
@@ -90,7 +90,7 @@ const std::array<StyleDef::StyleValue, size_t(Sid::STYLES)> StyleDef::styleValue
     { Sid::lyricsMelismaPad,        "lyricsMelismaPad",        Spatium(0.10) }, // the empty space before a melisma line
     { Sid::lyricsDashPad,           "lyricsDashPad",           Spatium(0.05) }, // the min. empty space before and after a dash
     { Sid::lyricsDashLineThickness, "lyricsDashLineThickness", Spatium(0.1) },  // in sp. units
-    { Sid::lyricsDashYposRatio,     "lyricsDashYposRatio",     0.60 },          // the fraction of lyrics font x-height to raise the dashes above text base line
+    { Sid::lyricsDashYposRatio,     "lyricsDashYposRatio",     0.50 },          // the fraction of lyrics font x-height to raise the dashes above text base line
 
     { Sid::lyricsOddFontFace,       "lyricsOddFontFace",       "Edwin" },
     { Sid::lyricsOddFontSize,       "lyricsOddFontSize",       10.0 },
@@ -849,7 +849,7 @@ const std::array<StyleDef::StyleValue, size_t(Sid::STYLES)> StyleDef::styleValue
     { Sid::harpPedalDiagramFrameRound,        "harpPedalDiagramFrameRound",        0 },
     { Sid::harpPedalDiagramFrameFgColor,      "harpPedalDiagramFrameFgColor",      PropertyValue::fromValue(Color::BLACK) },
     { Sid::harpPedalDiagramFrameBgColor,      "harpPedalDiagramFrameBgColor",
-      PropertyValue::fromValue(draw::Color::transparent) },
+      PropertyValue::fromValue(Color::transparent) },
     { Sid::harpPedalDiagramOffset,            "harpPedalDiagramOffset",            PointF() },
     { Sid::harpPedalDiagramPlacement,         "harpPedalDiagramPlacement",         PlacementV::ABOVE },
     { Sid::harpPedalDiagramPosAbove,          "harpPedalDiagramPosAbove",          PointF(.0, -1.0) },
@@ -869,7 +869,7 @@ const std::array<StyleDef::StyleValue, size_t(Sid::STYLES)> StyleDef::styleValue
     { Sid::harpPedalTextDiagramFrameRound,        "harpPedalTextDiagramFrameRound",        0 },
     { Sid::harpPedalTextDiagramFrameFgColor,      "harpPedalTextDiagramFrameFgColor",      PropertyValue::fromValue(Color::BLACK) },
     { Sid::harpPedalTextDiagramFrameBgColor,      "harpPedalTextDiagramFrameBgColor",
-      PropertyValue::fromValue(draw::Color::transparent) },
+      PropertyValue::fromValue(Color::transparent) },
     { Sid::harpPedalTextDiagramOffset,            "harpPedalTextDiagramOffset",            PointF() },
     { Sid::harpPedalTextDiagramPlacement,         "harpPedalTextDiagramPlacement",         PlacementV::BELOW },
     { Sid::harpPedalTextDiagramPosAbove,          "harpPedalTextDiagramPosAbove",          PointF(.0, -1.5) },
@@ -971,15 +971,15 @@ const std::array<StyleDef::StyleValue, size_t(Sid::STYLES)> StyleDef::styleValue
     { Sid::tempoFramePadding,             "tempoFramePadding",            0.2 },
     { Sid::tempoFrameWidth,               "tempoFrameWidth",              0.1 },
     { Sid::tempoFrameRound,               "tempoFrameRound",              0 },
-    { Sid::tempoFrameFgColor,             "tempoFrameFgColor",            PropertyValue::fromValue(draw::Color::BLACK) },
-    { Sid::tempoFrameBgColor,             "tempoFrameBgColor",            PropertyValue::fromValue(draw::Color::transparent) },
+    { Sid::tempoFrameFgColor,             "tempoFrameFgColor",            PropertyValue::fromValue(Color::BLACK) },
+    { Sid::tempoFrameBgColor,             "tempoFrameBgColor",            PropertyValue::fromValue(Color::transparent) },
 
     { Sid::tempoChangeFontFace,                 "tempoChangeFontFace",                "Edwin" },
     { Sid::tempoChangeFontSize,                 "tempoChangeFontSize",                12.0 },
     { Sid::tempoChangeLineSpacing,              "tempoChangeLineSpacing",             1.0 },
     { Sid::tempoChangeFontSpatiumDependent,     "tempoChangeFontSpatiumDependent",    true },
     { Sid::tempoChangeFontStyle,                "tempoChangeFontStyle",               int(FontStyle::Bold) },
-    { Sid::tempoChangeColor,                    "tempoChangeColor",                   PropertyValue::fromValue(draw::Color::BLACK) },
+    { Sid::tempoChangeColor,                    "tempoChangeColor",                   PropertyValue::fromValue(Color::BLACK) },
     { Sid::tempoChangeAlign,                    "tempoChangeAlign",                   Align(AlignH::LEFT, AlignV::BASELINE) },
     { Sid::tempoChangeSystemFlag,               "tempoChangeSystemFlag",              true },
     { Sid::tempoChangePlacement,                "tempoChangePlacement",               PlacementV::ABOVE },
@@ -990,8 +990,8 @@ const std::array<StyleDef::StyleValue, size_t(Sid::STYLES)> StyleDef::styleValue
     { Sid::tempoChangeFramePadding,             "tempoChangeFramePadding",            0.2 },
     { Sid::tempoChangeFrameWidth,               "tempoChangeFrameWidth",              0.1 },
     { Sid::tempoChangeFrameRound,               "tempoChangeFrameRound",              0 },
-    { Sid::tempoChangeFrameFgColor,             "tempoChangeFrameFgColor",            PropertyValue::fromValue(draw::Color::BLACK) },
-    { Sid::tempoChangeFrameBgColor,             "tempoChangeFrameBgColor",            PropertyValue::fromValue(draw::Color::transparent) },
+    { Sid::tempoChangeFrameFgColor,             "tempoChangeFrameFgColor",            PropertyValue::fromValue(Color::BLACK) },
+    { Sid::tempoChangeFrameBgColor,             "tempoChangeFrameBgColor",            PropertyValue::fromValue(Color::transparent) },
     { Sid::tempoChangeLineWidth,                "tempoChangeLineWidth",         Spatium(0.15) },
     { Sid::tempoChangeLineStyle,                "tempoChangeLineStyle",         PropertyValue(LineType::DASHED) },
     { Sid::tempoChangeDashLineLen,              "tempoChangeDashLineLen",       6.0 },

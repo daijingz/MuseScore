@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -114,11 +114,11 @@ inline PlayEvent* playEventWrap(mu::engraving::NoteEvent* t, Note* parent)
 //   Based on QmlListAccess in excerpt.h
 //---------------------------------------------------------
 
-class QmlPlayEventsListAccess : public mu::extensions::api::QmlListProperty<PlayEvent>
+class QmlPlayEventsListAccess : public muse::extensions::api::QmlListProperty<PlayEvent>
 {
 public:
     QmlPlayEventsListAccess(QObject* obj, engraving::NoteEventList& container)
-        : mu::extensions::api::QmlListProperty<PlayEvent>(obj, &container, &append, &count, &at, &clear) {}
+        : muse::extensions::api::QmlListProperty<PlayEvent>(obj, &container, &append, &count, &at, &clear) {}
 
     static qsizetype count(QQmlListProperty<PlayEvent>* l) { return static_cast<engraving::NoteEventList*>(l->data)->size(); }
     static PlayEvent* at(QQmlListProperty<PlayEvent>* l, qsizetype i)

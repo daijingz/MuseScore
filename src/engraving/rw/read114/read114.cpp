@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: GPL-3.0-only
- * MuseScore-CLA-applies
+ * MuseScore-Studio-CLA-applies
  *
- * MuseScore
+ * MuseScore Studio
  * Music Composition & Notation
  *
- * Copyright (C) 2021 MuseScore BVBA and others
+ * Copyright (C) 2021 MuseScore Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -1265,7 +1265,7 @@ static void readVolta114(XmlReader& e, ReadContext& ctx, Volta* volta)
         const AsciiStringView tag(e.name());
         if (tag == "endings") {
             String s = e.readText();
-            StringList sl = s.split(u',', mu::SkipEmptyParts);
+            StringList sl = s.split(u',', muse::SkipEmptyParts);
             volta->endings().clear();
             for (const String& l : sl) {
                 int i = l.simplified().toInt();
@@ -1786,6 +1786,7 @@ static void readMeasure(Measure* m, int staffIdx, XmlReader& e, ReadContext& ctx
                 mmr->setParent(segment);
                 mmr->setTrack(ctx.track());
                 read400::TRead::read(mmr, e, ctx);
+                mmr->setTicks(m->ticks());
                 segment->add(mmr);
                 lastTick = ctx.tick();
                 ctx.incTick(mmr->actualTicks());
@@ -1843,7 +1844,7 @@ static void readMeasure(Measure* m, int staffIdx, XmlReader& e, ReadContext& ctx
                 // if (spanner->track2() == -1)
                 // the absence of a track tag [?] means the
                 // track is the same as the beginning of the slur
-                if (spanner->track2() == mu::nidx) {
+                if (spanner->track2() == muse::nidx) {
                     spanner->setTrack2(spanner->track() ? spanner->track() : ctx.track());
                 }
             } else {
@@ -2853,7 +2854,7 @@ Err Read114::readScore(Score* score, XmlReader& e, ReadInOutData* out)
 
     TempoMap tm;
     while (e.readNextStartElement()) {
-        ctx.setTrack(mu::nidx);
+        ctx.setTrack(muse::nidx);
         const AsciiStringView tag(e.name());
         if (tag == "Staff") {
             readStaffContent(masterScore, e, ctx);
@@ -2977,7 +2978,7 @@ Err Read114::readScore(Score* score, XmlReader& e, ReadInOutData* out)
                 assert(tag == "HairPin");
                 Read206::readHairpin206(e, ctx, toHairpin(s));
             }
-            if (s->track() == mu::nidx) {
+            if (s->track() == muse::nidx) {
                 s->setTrack(ctx.track());
             } else {
                 ctx.setTrack(s->track());               // update current track
@@ -2987,7 +2988,7 @@ Err Read114::readScore(Score* score, XmlReader& e, ReadInOutData* out)
             } else {
                 ctx.setTick(s->tick());              // update current tick
             }
-            if (s->track2() == mu::nidx) {
+            if (s->track2() == muse::nidx) {
                 s->setTrack2(s->track());
             }
             if (s->ticks().isZero()) {
@@ -3015,8 +3016,8 @@ Err Read114::readScore(Score* score, XmlReader& e, ReadInOutData* out)
         }
     }
 
-    if (e.error() != XmlStreamReader::NoError) {
-        LOGD("%lld %lld: %s ", e.lineNumber(), e.columnNumber(), muPrintable(e.errorString()));
+    if (e.error() != muse::XmlStreamReader::NoError) {
+        LOGD() << e.lineNumber() << " " << e.columnNumber() << ": " << e.errorString();
         return Err::FileBadFormat;
     }
 
@@ -3265,7 +3266,7 @@ Err Read114::readScore(Score* score, XmlReader& e, ReadInOutData* out)
     auto spanners = score->spanner();
     for (auto iter = spanners.begin(); iter != spanners.end(); ++iter) {
         Spanner* spanner = (*iter).second;
-        bool invalid = spanner->tick().negative() || spanner->track() == mu::nidx;
+        bool invalid = spanner->tick().negative() || spanner->track() == muse::nidx;
         if (invalid) {
             invalidSpanners.push_back(spanner);
         }

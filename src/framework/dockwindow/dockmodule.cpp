@@ -50,7 +50,7 @@
 #include "modularity/ioc.h"
 #include "ui/iuiengine.h"
 
-namespace mu::dock {
+namespace muse::dock {
 class DockWidgetFactory : public KDDockWidgets::DefaultWidgetFactory
 {
 public:
@@ -101,8 +101,8 @@ public:
 };
 }
 
-using namespace mu::dock;
-using namespace mu::modularity;
+using namespace muse::dock;
+using namespace muse::modularity;
 
 static void dock_init_qrc()
 {
