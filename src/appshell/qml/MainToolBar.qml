@@ -73,15 +73,6 @@ Item {
         width: contentItem.childrenRect.width
         height: contentItem.childrenRect.height
 
-        FontMetrics {
-            id: boldFontMetrics
-            font.bold: true
-            text: toolBarModel.title
-            onWidthChanged: {
-                radioButtonDelegate.width = width
-            }
-        }
-
         delegate: PageTabButton {
             id: radioButtonDelegate
 
@@ -91,10 +82,6 @@ Item {
             leftPadding: 12
 
             normalStateFont: model.isTitleBold ? ui.theme.largeBodyBoldFont : ui.theme.largeBodyFont
-
-            width: boldFontMetrics.width
-
-            horizontalAlignment: Text.AlignHCenter
 
             navigation.name: model.title
             navigation.panel: navPanel
